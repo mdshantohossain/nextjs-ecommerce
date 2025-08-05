@@ -1,5 +1,5 @@
-import ProductSection from "@/components/home/trending-products";
-import Slider from "@/components/home/Slider";
+import ProductSection from "@/components/home/exclusive-products";
+import Slider from "@/components/home/slider";
 import TrendingProducts from "@/components/home/trending-products";
 import TestimonialsSection from "@/components/home/testimonials";
 import BrandSliderSection from "@/components/home/brand-slide-section";

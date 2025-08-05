@@ -79,24 +79,7 @@ export default function ExclusiveProductSection() {
         {/* Section Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">Exclusive Products</h2>
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={cn(
-                  "px-4 py-2 text-sm md:text-base font-medium transition-colors rounded-md",
-                  activeCategory === category
-                    ? "text-red-500 border-b-2 border-red-500 bg-red-50 dark:bg-red-950/20"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+          
         </div>
 
         {/* Products Grid */}

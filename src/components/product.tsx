@@ -1,10 +1,9 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Badge, Heart, ShoppingCart, Star } from "lucide-react"
 import { useState } from "react"
 import { Button } from "./ui/button"
-
-
-
+import { useRouter } from "next/navigation"
 
 interface Product {
   id: number
@@ -24,6 +23,9 @@ export default function Product ({product}: {product: Product}) {
  const toggleWishlist = (productId: number) => {
     setWishlist((prev) => (prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]))
   }
+
+
+  const router = useRouter();
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -90,11 +92,18 @@ export default function Product ({product}: {product: Product}) {
 
                 {/* Action Buttons */}
                 <div className="space-y-2">
-                  <Button className="w-full" variant="outline" size="sm">
+                  <Button
+                  onClick={() => router.push('/cart')}
+                   className="w-full" variant="outline" size="sm"
+                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Add to Cart
                   </Button>
-                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white" size="sm">
+                  <Button
+                  onClick={() => router.push('/checkout')}
+                   className="w-full bg-red-500 hover:bg-red-600 text-white"
+                   size="sm"
+                   >
                     Order Now
                   </Button>
                 </div>
