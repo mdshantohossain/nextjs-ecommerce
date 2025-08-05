@@ -4,6 +4,7 @@ import { Badge, Heart, ShoppingCart, Star } from "lucide-react"
 import { useState } from "react"
 import { Button } from "./ui/button"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 interface Product {
   id: number
@@ -64,7 +65,7 @@ export default function Product ({product}: {product: Product}) {
 
               {/* Product Image */}
               <div className="aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
-                <img
+                <Image
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
