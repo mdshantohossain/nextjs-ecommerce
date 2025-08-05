@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type React from "react";
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -243,7 +244,7 @@ export default function BrandSliderSection() {
                 key={`${brand.id}-${index}`}
                 className="flex-shrink-0 flex items-center justify-center h-16 w-32 md:w-40 lg:w-48 select-none"
               >
-                <img
+                <Image
                   src={brand.logo || "/placeholder.svg"}
                   alt={brand.name}
                   className="max-h-full max-w-full object-contain opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0 pointer-events-none"

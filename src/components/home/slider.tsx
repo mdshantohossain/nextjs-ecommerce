@@ -4,6 +4,7 @@ import type React from "react"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface ImageSliderProps {
   images: {
@@ -129,7 +130,7 @@ export default function Slider({ images, autoPlayInterval = 3000, className }: I
             aria-roledescription="slide"
             aria-label={`${index + 1} of ${images.length}`}
           >
-            <img
+            <Image
               src={image.src || "/placeholder.svg"}
               alt={image.alt}
               className="w-full h-full object-cover"
