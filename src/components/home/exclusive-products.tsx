@@ -1,21 +1,19 @@
+"use client";
 
-"use client"
-
-import { useState } from "react"
-import { cn } from "@/lib/utils"
-import Product from "@/components/product"
+import { useState } from "react";
+import Product from "@/components/product";
 
 interface Product {
-  id: number
-  name: string
-  image: string
-  currentPrice: number
-  originalPrice: number
-  discount: number
-  rating: number
-  reviewCount: number
-  badge?: string
-  isWishlisted?: boolean
+  id: number;
+  name: string;
+  image: string;
+  currentPrice: number;
+  originalPrice: number;
+  discount: number;
+  rating: number;
+  reviewCount: number;
+  badge?: string;
+  isWishlisted?: boolean;
 }
 
 const products: Product[] = [
@@ -64,22 +62,21 @@ const products: Product[] = [
     reviewCount: 21,
     isWishlisted: false,
   },
-]
+];
 
-const categories = ["New Arrival", "Best Sellers", "Featured", "Special Offer"]
+const categories = ["New Arrival", "Best Sellers", "Featured", "Special Offer"];
 
 export default function ExclusiveProductSection() {
-  const [activeCategory, setActiveCategory] = useState("Featured")
-  
-
+  const [activeCategory, setActiveCategory] = useState("Featured");
 
   return (
     <section className="py-12 bg-background">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">Exclusive Products</h2>
-          
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">
+            Exclusive Products
+          </h2>
         </div>
 
         {/* Products Grid */}
@@ -90,7 +87,5 @@ export default function ExclusiveProductSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-

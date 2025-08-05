@@ -145,17 +145,6 @@ export default function Loader({
   return content
 }
 
-// Custom CSS for bounce animation (add to globals.css or use inline styles)
-const bounceKeyframes = `
-@keyframes bounce {
-  0%, 80%, 100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-`
 
 // Data fetching loader component
 interface DataLoaderProps {

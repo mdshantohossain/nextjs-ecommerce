@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { MapPin, Mail, Phone, Truck, RotateCcw, Headphones } from "lucide-react"
+import Image from "next/image"
 
 export default function Footer() {
   const usefulLinks = [
@@ -104,14 +105,14 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-foreground mb-4">Download App</h4>
             <div className="flex flex-col sm:flex-row lg:flex-col gap-3 mb-6">
               <Link href="#" className="inline-block">
-                <img
+                <Image
                   src="/placeholder.svg?height=40&width=135"
                   alt="Get it on Google Play"
                   className="h-10 w-auto bg-black rounded"
                 />
               </Link>
               <Link href="#" className="inline-block">
-                <img
+                <Image
                   src="/placeholder.svg?height=40&width=135"
                   alt="Download on the App Store"
                   className="h-10 w-auto bg-black rounded"

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface Testimonial {
   id: number
@@ -112,7 +113,7 @@ export default function TestimonialsSection() {
 
                 {/* Client Info */}
                 <div className="flex items-center justify-center space-x-4">
-                  <img
+                  <Image
                     src={currentTestimonial.avatar || "/placeholder.svg"}
                     alt={currentTestimonial.name}
                     className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
