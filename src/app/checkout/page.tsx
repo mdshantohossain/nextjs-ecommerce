@@ -102,7 +102,7 @@ export default function CheckoutPage() {
       alert("Order placed successfully!")
       // Here you would typically redirect to a success page or reset the form
     } catch (error) {
-      alert("Failed to place order. Please try again.")
+      alert(error)
     } finally {
       setIsProcessing(false)
     }

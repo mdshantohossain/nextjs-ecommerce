@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Minus, Plus, X, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 interface CartItem {
   id: string
@@ -118,7 +119,7 @@ export default function CartPage() {
               <div key={item.id} className="grid grid-cols-12 gap-4 p-4 border-b items-center">
                 {/* Product */}
                 <div className="col-span-5 flex items-center space-x-4">
-                  <img
+                  <Image
                     src={item.image || "/placeholder.svg"}
                     alt={item.name}
                     className="w-16 h-16 object-cover rounded border"
@@ -184,7 +185,7 @@ export default function CartPage() {
           {cartItems.map((item) => (
             <div key={item.id} className="bg-card border rounded-lg p-4">
               <div className="flex items-start space-x-4">
-                <img
+                <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name}
                   className="w-20 h-20 object-cover rounded border flex-shrink-0"

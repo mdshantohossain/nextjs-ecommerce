@@ -115,6 +115,7 @@ export default function TestimonialsSection() {
                   <img
                     src={currentTestimonial.avatar || "/placeholder.svg"}
                     alt={currentTestimonial.name}
+                    
                     className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
                   />
                   <div className="text-left">
