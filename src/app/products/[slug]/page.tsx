@@ -85,6 +85,10 @@ export default function ProductDetailPage() {
     slug as string
   );
 
+  useEffect(() => {
+    console.log(product);
+  }, [product]);
+
   const [showFullscreen, setShowFullscreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 

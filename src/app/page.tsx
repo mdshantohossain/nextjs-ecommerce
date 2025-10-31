@@ -10,7 +10,6 @@ import { fetchProducts } from "@/features/productSlice";
 import TestimonialsSection from "@/components/page/home/TestimonialsSection";
 import Slider from "@/components/page/home/Slider";
 import { fetchAppInfo } from "@/features/appSlice";
-import { API_URL } from "@/config/api";
 
 const images = [
   {
@@ -39,8 +38,6 @@ export default function HomePage() {
     dispatch(fetchProducts());
     dispatch(fetchAppInfo());
   }, [dispatch]);
-
-  console.log(API_URL);
 
   return (
     <div className="min-h-screen bg-background">

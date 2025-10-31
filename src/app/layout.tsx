@@ -30,16 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="./favicon.png" sizes="any" />
+        <link rel="icon" href="/icon.png" sizes="32x32" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxWrapper>
-          <Header />
-          {children}
-          <Footer />
-          <ToastContainer position="bottom-left" />
+            <Header />
+            {children}
+            <Footer />
+            <ToastContainer position="bottom-left" />
         </ReduxWrapper>
       </body>
     </html>

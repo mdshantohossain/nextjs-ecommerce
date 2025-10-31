@@ -105,7 +105,7 @@ export default function Product({ product }: { product: ProductType }) {
           </span>
           {product.discount && (
             <span className="text-sm font-medium text-green-600">
-              {product.discount}% Off
+              {product.discount} Off
             </span>
           )}
         </div>

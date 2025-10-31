@@ -55,8 +55,8 @@ module.exports = {
           ring: "hsl(var(--sidebar-ring))",
         },
         red: {
-          500: "#ff324d",
-          600: "#e62c44",
+          500: "#32ff5eff",
+          600: "#542ce6ff",
         },
       },
       borderRadius: {
