@@ -1,3 +1,19 @@
+// auth types
+export type RegisterValuesType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type LoginValuesType = {
+  email: string;
+  password: string;
+};
+
+export type ResetPasswordType = {
+  email: string;
+};
+
 // cart product type
 export type CartItemType = {
   id: string;
@@ -25,6 +41,7 @@ export type UserType = {
   id: number;
   name: string;
   email: string;
+  phone: string;
   role: string;
   profile_photo?: string
 }

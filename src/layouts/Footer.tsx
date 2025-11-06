@@ -57,7 +57,7 @@ export default function Footer() {
             <div className="lg:col-span-1">
               <div className="flex items-center mb-4">
                 {appInfo?.logo ? (
-                  <div className="relative w-60 h-14">
+                  <div className="relative w-50 h-14">
                     <Link href="/">
                       <Image
                         src={appInfo.logo}
@@ -68,7 +68,7 @@ export default function Footer() {
                     </Link>
                   </div>
                 ) : (
-                  <div className="relative w-60 h-14">
+                  <div className="relative w-50 h-14">
                     <Link href="/">
                       <Image
                         src={AppLogo} // your local logo from assets

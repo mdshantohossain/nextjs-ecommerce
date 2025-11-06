@@ -34,6 +34,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true, 
   },
+  reactStrictMode: false,
    webpack: (config) => {
      config.resolve.alias = {
        ...config.resolve.alias,

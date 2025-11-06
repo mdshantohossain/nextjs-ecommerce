@@ -10,6 +10,9 @@ import {
   Menu,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/features/hooks";
+import { logout } from "@/features/authSlice";
+import { toast } from "react-toastify";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", pageUrl: "/dashboard" },
@@ -24,11 +27,8 @@ export default function DashoardLayout({ children }: PropsWithChildren) {
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    router.push("/");
-  }
 
   const handleNavition = (label: string, url?: string) => {
     if (url !== undefined) {
@@ -36,7 +36,9 @@ export default function DashoardLayout({ children }: PropsWithChildren) {
       setSidebarOpen(false);
       router.push(url);
     } else {
-      logout();
+      dispatch(logout());
+      toast.success('Logout successfully');
+      return router.replace('/');
     }
   };
 

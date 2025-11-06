@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/features/hooks";
 import { useRouter } from "next/navigation";
-import EmptyCart from "@/components/page/cart/EmptyCart";
 import CartItem from "@/components/page/cart/CartItem";
+import EmptyContent from "@/components/EmptyContent";
+import EmptyCart from "@/assets/images/cart.png";
+import Image from "next/image";
 
 export default function CartPage() {
   const [appliedCoupon] = useState<{
@@ -32,7 +34,17 @@ export default function CartPage() {
     // update quantity
   };
 
-  if (cartItems.length === 0) return <EmptyCart />;
+  if (cartItems.length === 0) {
+    return (
+      <EmptyContent
+        title="Shopping Cart"
+        message="Add some products to get started!"
+        image={EmptyCart}
+        buttonText="Continue Shopping"
+        href="/"
+      />
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">

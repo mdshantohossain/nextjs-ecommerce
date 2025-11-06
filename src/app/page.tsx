@@ -4,12 +4,13 @@ import TrendingProducts from "@/components/page/home/TrendingProducts";
 import BrandSlideSection from "@/components/page/home/BrandSlideSection";
 import CategorySection from "@/components/page/home/CategorySection";
 import { useEffect } from "react";
-import { useAppDispatch } from "@/features/hooks";
+import { useAppDispatch, useAppSelector } from "@/features/hooks";
 import { fetchCategories } from "@/features/categorySlice";
 import { fetchProducts } from "@/features/productSlice";
 import TestimonialsSection from "@/components/page/home/TestimonialsSection";
 import Slider from "@/components/page/home/Slider";
 import { fetchAppInfo } from "@/features/appSlice";
+import AddSection from "@/components/page/home/AddSection";
 
 const images = [
   {
@@ -33,6 +34,8 @@ const images = [
 export default function HomePage() {
   const dispatch = useAppDispatch();
 
+  const auth = useAppSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchProducts());
@@ -49,14 +52,11 @@ export default function HomePage() {
       </div>
 
       <main className="container mx-auto px-4 py-8">
+        <AddSection />
         <CategorySection />
-
         <ExclusiveProducts />
-
         <TrendingProducts />
-
-        <TestimonialsSection />``
-
+        <TestimonialsSection />
         <BrandSlideSection />
       </main>
     </div>

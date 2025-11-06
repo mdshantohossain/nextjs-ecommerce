@@ -1,9 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import {
-  Filter,
-} from "lucide-react";
+import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -21,7 +19,8 @@ import FilterSidebar from "@/components/page/product/FilterSidebar";
 import Pagination from "@/components/page/product/Pagination";
 import ProductsSkeleton from "@/components/skeleton/ProductsSkeleton";
 import { ProductType } from "@/types";
-
+import EmptyContent from "@/components/EmptyContent";
+import EmptyProduct from "@/assets/images/search.png";
 export default function ProductsContent() {
   const [sortBy, setSortBy] = useState<string>("default");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -76,9 +75,13 @@ export default function ProductsContent() {
       case "default":
         return products.sort((a: ProductType, b: ProductType) => b.id - a.id);
       case "price-low":
-        return products.sort((a: ProductType, b: ProductType) => a.selling_price - b.selling_price);
+        return products.sort(
+          (a: ProductType, b: ProductType) => a.selling_price - b.selling_price
+        );
       case "price-high":
-        return products.sort((a: ProductType, b: ProductType) => b.selling_price - a.selling_price);
+        return products.sort(
+          (a: ProductType, b: ProductType) => b.selling_price - a.selling_price
+        );
       // case "rating":
       //   return products.sort((a, b) => b.reviews.rating - a.reviews.rating);
       case "newest":
@@ -95,6 +98,82 @@ export default function ProductsContent() {
   if (categoryProductsLoading || searchProductsLoading) {
     return <ProductsSkeleton />;
   }
+
+  const renderContent =
+    products.length === 0 ? (
+      <div className="min-h-screen flex items-center justify-center">
+        <EmptyContent
+          title="No Products Found"
+          message="Try adjusting your search or filter settings."
+          image={EmptyProduct}
+          buttonText="Go Back"
+          href="/"
+        />
+      </div>
+    ) : (
+      <>
+        {/* Toolbar */}
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="lg:hidden bg-transparent"
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80 overflow-y-auto">
+                <div className="py-4">
+                  <FilterSidebar
+                    onCategoryChange={onCategoryChange}
+                    onBrandChange={onBrandChange}
+                    onSizeChange={onSizeChange}
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <p className="text-sm text-muted-foreground">
+              Showing {startIndex + perPageItems} of {products.length} products
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Select value={sortBy} onValueChange={productShorting}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Default sorting</SelectItem>
+                <SelectItem value="price-low"> Price: Low to High</SelectItem>
+                <SelectItem value="price-high"> Price: High to Low</SelectItem>
+                <SelectItem value="rating">Highest Rated</SelectItem>
+                <SelectItem value="newest">Newest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div
+          className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3`}
+        >
+          {currentProducts.map((product: ProductType) => (
+            <Product key={product.id} product={product} />
+          ))}
+        </div>
+
+        {/* Pagination */}
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </>
+    );
 
   return (
     <div className="min-h-screen bg-background" ref={mainRef}>
@@ -121,73 +200,7 @@ export default function ProductsContent() {
 
           {/* Main Content */}
           <main className="flex-1">
-            {/* Toolbar */}
-            <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="lg:hidden bg-transparent"
-                    >
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filters
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-80 overflow-y-auto">
-                    <div className="py-4">
-                      <FilterSidebar
-                        onCategoryChange={onCategoryChange}
-                        onBrandChange={onBrandChange}
-                        onSizeChange={onSizeChange}
-                      />
-                    </div>
-                  </SheetContent>
-                </Sheet>
-                <p className="text-sm text-muted-foreground">
-                  Showing {startIndex + perPageItems} of {products.length}{" "}
-                  products
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
-                <Select value={sortBy} onValueChange={productShorting}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="default">Default sorting</SelectItem>
-                    <SelectItem value="price-low">
-                      {" "}
-                      Price: Low to High
-                    </SelectItem>
-                    <SelectItem value="price-high">
-                      {" "}
-                      Price: High to Low
-                    </SelectItem>
-                    <SelectItem value="rating">Highest Rated</SelectItem>
-                    <SelectItem value="newest">Newest First</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Products Grid */}
-            <div
-              className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3`}
-            >
-              {currentProducts.map((product: ProductType) => (
-                <Product key={product.id} product={product} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+            {renderContent}
           </main>
         </div>
       </div>

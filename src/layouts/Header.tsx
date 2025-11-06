@@ -5,28 +5,13 @@ import Link from "next/link";
 import AppLogo from "@/assets/images/logo.png";
 import { useState, useEffect } from "react";
 import {
-  Search,
   User,
   ShoppingCart,
   Menu,
-  X,
   ChevronDown,
-  Phone,
-  Monitor,
-  Smartphone,
-  Camera,
-  Headphones,
-  Gamepad2,
-  Watch,
-  Home,
-  Tv,
-  Printer,
-  ChevronRight,
-  Plus,
   Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -154,14 +139,14 @@ export default function Header() {
       {/* <div className="bg-gray-200 w-full h-10 items-center flex">
       dark mode here  | language mode 
      </div> */}
-      <div className="container mx-auto px-4 pb-4">
-        <div className="flex items-center justify-between py-5">
+      <div className="container mx-auto px-4 pb-2" >
+        <div className="flex items-center justify-between py-1">
           {/* Logo */}
           <div className="flex items-center">
             {isLoading ? (
-              <Skeleton className="w-60 h-12" />
+              <Skeleton className="w-50 h-12" />
             ) : appInfo?.logo ? (
-              <div className="relative w-60 h-14">
+              <div className="relative w-50 h-14">
                 <Link href="/">
                   <Image
                     src={appInfo.logo}
@@ -172,7 +157,7 @@ export default function Header() {
                 </Link>
               </div>
             ) : (
-              <div className="relative w-60 h-14">
+              <div className="relative w-50 h-14">
                 <Link href="/">
                   <Image
                     src={AppLogo} // your local logo from assets
@@ -246,7 +231,7 @@ export default function Header() {
                 <NavigationMenuItem>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <div className="flex gap-4 items-center bg-red-500 rounded-md p-1 md:p-3 cursor-pointer">
+                      <div className="flex  items-center bg-red-500 rounded-md p-1 md:p-2 cursor-pointer">
                         <h3 className="text-white font-bold">All Categories</h3>
                         <Menu className="h-5 w-5l text-white ms-10" />
                       </div>

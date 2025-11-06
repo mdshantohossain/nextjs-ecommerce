@@ -49,7 +49,7 @@ export default function Product({ product }: { product: ProductType }) {
   // };
 
   return (
-    <div className="group relative bg-card border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {/* Product Badge */}
       {/* {product.badge && (
         <Badge className="absolute top-3 left-3 z-10 bg-red-500 hover:bg-red-600 text-white">
@@ -97,12 +97,15 @@ export default function Product({ product }: { product: ProductType }) {
 
         {/* Price */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg font-bold text-red-500">
+          <span className="text-2xl">
             ${product.selling_price}
           </span>
-          <span className="text-sm text-muted-foreground line-through">
-            TK.{product.regular_price}
+          {product.regular_price && (
+            <span className="text-sm text-muted-foreground line-through">
+            ${product.regular_price}
           </span>
+          )}
+          
           {product.discount && (
             <span className="text-sm font-medium text-green-600">
               {product.discount} Off

@@ -1,31 +1,26 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// Define routes that require auth
+const protectedRoutes = ["/dashboard", "/profile", "/orders", "/wishlist"];
+
+// Define routes for guests only (login/register)
+const authRoutes = ["/login", "/register", "/reset-password"];
+
 export function middleware(request: NextRequest) {
   // Get token from cookies
   const token = request.cookies.get("auth_token")?.value;
 
+  const path = request.nextUrl.pathname;
 
-  console.log('middleware')
-
-  // Define protected routes
-  const protectedRoutes = ["/dashboard", "/account"];
-
-  console.log(request.nextUrl.pathname);
-
-  // Check if current path is protected
-  const isProtected = protectedRoutes.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
-
-  // If route is protected and no token → redirect to login
-  if (isProtected && !token) {
+  if (!token && protectedRoutes.some((route) => path.startsWith(route))) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // If user tries to access login page but already has token → redirect
-  if (request.nextUrl.pathname === "/login" && token) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // If the request is for a protected route and the token is missing, redirect to login page
+  if (token && authRoutes.some((route) => path.startsWith(route))) {
+    const dashboardUrl = new URL("/dashboard", request.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   // Otherwise, allow request
