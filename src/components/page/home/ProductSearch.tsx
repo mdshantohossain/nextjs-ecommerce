@@ -9,30 +9,27 @@ export default function ProductSearch() {
   const router = useRouter();
 
   const handleSearch = () => {
-  if (query.trim()) {
+    if (query.trim()) {
       router.push(`/products?query=${encodeURIComponent(query)}`);
     }
   };
- 
+
   return (
-    <div className="relative w-full border-b-3 border-gray-300 focus:border-red-500 flex focus-within:border-red-500">
-      {/* Input with bottom border only */}
+    <div className="flex items-center w-full max-w-lg border border-gray-300 rounded-sm bg-white shadow-sm focus-within:border-red-500 transition-colors">
+      {/* Search Icon */}
+      <div className="pl-3 pr-2 text-gray-400 flex items-center">
+        <Search className="h-5 w-5" />
+      </div>
+
+      {/* Input */}
       <input
         type="text"
-        placeholder="Search product..."
+        placeholder="Search for items..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="flex flex-1 focus:ring-0 px-2 py-2 text-lg outline-none"
         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        className="w-full py-2 pr-3 text-gray-700 placeholder-gray-400 focus:outline-none"
       />
-
-      {/* Icon button */}
-      <button
-        onClick={handleSearch}
-        className="w-10 text-gray-500 hover:text-black flex items-center justify-center"
-      >
-        <Search className="h-5 w-5" />
-      </button>
     </div>
   );
 }
