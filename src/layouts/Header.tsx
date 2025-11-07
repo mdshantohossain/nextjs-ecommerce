@@ -1,5 +1,5 @@
 "use client";
-import NavigationMenuDemo from "@/components/nevigation";
+import Navigation from "@/components/nevigation";
 import Image from "next/image";
 import Link from "next/link";
 import AppLogo from "@/assets/images/logo.png";
@@ -12,17 +12,7 @@ import {
   Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+
 import {
   Sheet,
   SheetContent,
@@ -38,11 +28,11 @@ import {
 import { cn } from "@/lib/utils";
 import WhatAppImage from "@/assets/images/whatsapp.png";
 import { Search as SearchIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import ProductSearch from "@/components/page/home/ProductSearch";
 import { useAppSelector } from "@/features/hooks";
 import DropdownCart from "@/components/DropdownCart";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CategoryDropdown } from "@/components/CategoryDropdown";
 
 const categories = [
   { id: 1, name: "All Category" },
@@ -139,7 +129,7 @@ export default function Header() {
       {/* <div className="bg-gray-200 w-full h-10 items-center flex">
       dark mode here  | language mode 
      </div> */}
-      <div className="container mx-auto px-4 pb-2" >
+      <div className="container mx-auto px-4 pb-2">
         <div className="flex items-center justify-between py-1">
           {/* Logo */}
           <div className="flex items-center">
@@ -224,84 +214,8 @@ export default function Header() {
 
         {/* bottom header */}
         <div className="flex items-center justify-between">
-          {/* desktop all categories */}
-          <div className="hidden md:flex">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <div className="flex  items-center bg-red-500 rounded-md p-1 md:p-2 cursor-pointer">
-                        <h3 className="text-white font-bold">All Categories</h3>
-                        <Menu className="h-5 w-5l text-white ms-10" />
-                      </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-[210px]">
-                      {categories.map((category) => (
-                        <DropdownMenuItem key={category.id}>
-                          <Link href={"/"}>{category.name}</Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
 
-          {/* mobile, tab all categories */}
-          <div className="md:hidden order-1 md:order-1">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <div className="flex gap-4 items-center bg-red-500 rounded-md p-1 md:p-3 cursor-pointer">
-                  <Menu className="h-5 w-5l text-white" />
-                </div>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                <SheetHeader>
-                  <SheetTitle>All Categories</SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col space-y-4 mt-6 h-full  overflow-scroll">
-                  <Collapsible
-                    open={openCollapsible === "components"}
-                    onOpenChange={() => toggleCollapsible("components")}
-                  >
-                    <CollapsibleTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-between h-auto p-3"
-                      >
-                        <span className="font-medium">Components</span>
-                        <ChevronDown
-                          className={cn(
-                            "h-4 w-4 transition-transform",
-                            openCollapsible === "components" && "rotate-180"
-                          )}
-                        />
-                      </Button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="space-y-2 px-3">
-                      {components.map((component) => (
-                        <Link
-                          key={component.title}
-                          href={component.href}
-                          className="block p-3 rounded-md hover:bg-muted transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <div className="font-medium text-sm">
-                            {component.title}
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {component.description}
-                          </p>
-                        </Link>
-                      ))}
-                    </CollapsibleContent>
-                  </Collapsible>
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+          <CategoryDropdown />
 
           {/* navigation menu */}
           <div className="order-3 md:order-2 flex items-center">
@@ -311,7 +225,7 @@ export default function Header() {
               />
             </div>
             <div className="order-2">
-              <NavigationMenuDemo />
+              <Navigation />
             </div>
           </div>
 
