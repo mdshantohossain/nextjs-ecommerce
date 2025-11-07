@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/layouts/Header";
 import Footer from "@/layouts/Footer";
 import ReduxWrapper from "@/wrapper/ReduxWrapper";
-  import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +26,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
       <head>
@@ -36,10 +35,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxWrapper>
-            <Header />
-            {children}
-            <Footer />
-            <ToastContainer position="bottom-left" />
+          <Header />
+          {children}
+          <Footer />
+          <ToastContainer position="bottom-left" />
         </ReduxWrapper>
       </body>
     </html>
