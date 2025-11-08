@@ -10,7 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Product from "@/components/Product";
 import { useSearchParams } from "next/navigation";
 import useCategoryProduct from "@/hooks/api/useCategoryProduct";
@@ -21,6 +27,7 @@ import ProductsSkeleton from "@/components/skeleton/ProductsSkeleton";
 import { ProductType } from "@/types";
 import EmptyContent from "@/components/EmptyContent";
 import EmptyProduct from "@/assets/images/search.png";
+import useSubCategoryProduct from "@/hooks/api/useSubCategoryProduct";
 export default function ProductsContent() {
   const [sortBy, setSortBy] = useState<string>("default");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -30,15 +37,20 @@ export default function ProductsContent() {
   // hooks
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
+  const subCategory = searchParams.get("sub-category");
   const query = searchParams.get("query");
 
   const { data: categoryProducts, isLoading: categoryProductsLoading } =
     useCategoryProduct({ slug: category, enabled: !!category });
 
+  const { data: subCategoryProducts, isLoading: subCategoryProductsLoading } =
+    useSubCategoryProduct({ slug: subCategory, enabled: !!subCategory });
+
   const { data: searchProducts, isLoading: searchProductsLoading } =
     useSearchProducts({ query, enabled: !!query });
 
-  const products = categoryProducts || searchProducts || [];
+  const products =
+    categoryProducts || searchProducts || subCategoryProducts || [];
 
   // pagination calculations
   const totalPages = Math.ceil(products.length / perPageItems);
@@ -95,7 +107,11 @@ export default function ProductsContent() {
   };
 
   // show loading skeleton if loading
-  if (categoryProductsLoading || searchProductsLoading) {
+  if (
+    categoryProductsLoading ||
+    searchProductsLoading ||
+    subCategoryProductsLoading
+  ) {
     return <ProductsSkeleton />;
   }
 
@@ -127,7 +143,12 @@ export default function ProductsContent() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-80 overflow-y-auto">
-                <div className="py-4">
+                <SheetHeader>
+                  <SheetTitle className="text-lg font-bold text-gray-900">
+                    Filters
+                  </SheetTitle>
+                </SheetHeader>
+                <div>
                   <FilterSidebar
                     onCategoryChange={onCategoryChange}
                     onBrandChange={onBrandChange}
@@ -199,9 +220,7 @@ export default function ProductsContent() {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1">
-            {renderContent}
-          </main>
+          <main className="flex-1">{renderContent}</main>
         </div>
       </div>
     </div>

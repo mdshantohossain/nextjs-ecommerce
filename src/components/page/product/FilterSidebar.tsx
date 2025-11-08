@@ -39,10 +39,10 @@ export default function FilterSidebar({
   }, [selectedCategories, selectedBrands, selectedSizes]);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-3">
       {/* Categories */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h3 className="font-semibold text-lg mb-4 text-balance">
             Categories
           </h3>
@@ -87,7 +87,7 @@ export default function FilterSidebar({
 
       {/* Price Range */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h3 className="font-semibold text-lg mb-4 text-balance">
             Price Range
           </h3>
@@ -109,7 +109,7 @@ export default function FilterSidebar({
 
       {/* Brands */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent>
           <h3 className="font-semibold text-lg mb-4 text-balance">Brands</h3>
           <div className="space-y-3">
             {brands.map((brand) => (

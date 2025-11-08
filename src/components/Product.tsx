@@ -137,7 +137,7 @@ export default function Product({ product }: { product: ProductType }) {
             className="w-full bg-red-500 hover:bg-red-600 text-white"
             size="sm"
           >
-            Order Now
+            Shop Now
           </Button>
         </div>
       </div>

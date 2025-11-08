@@ -5,7 +5,7 @@ export default function useExclusiveProducts() {
   return useQuery({
     queryKey: ['exclusive-products'],
     queryFn: async () => {
-      const response = await fetch(API_URL + '/get-exclusive-products')
+      const response = await fetch(API_URL + '/exclusive-products')
       return response.json();
     },
   })

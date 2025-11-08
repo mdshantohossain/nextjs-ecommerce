@@ -7,7 +7,7 @@ export default function useTrendingProducts() {
   return useQuery({
     queryKey: ["trending-products"],
     queryFn: async () => {
-      const { data } = await axios.get(API_URL + "/get-trending-products");
+      const { data } = await axios.get(API_URL + "/trending-products");
       return data;
     },
   });

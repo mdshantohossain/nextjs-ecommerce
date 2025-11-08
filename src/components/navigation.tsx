@@ -204,7 +204,7 @@ export default function Navigation() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]" onClick={(e) => e.stopPropagation()}>
             <SheetHeader>
               <SheetTitle>Navigation</SheetTitle>
             </SheetHeader>

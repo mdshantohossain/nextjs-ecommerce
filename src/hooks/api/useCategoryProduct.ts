@@ -7,7 +7,7 @@ export default function useCategoryProduct({slug, enabled}: { slug: string | nul
     return useQuery<ProductType[], Error>({
         queryKey: ["category-products", slug],
         queryFn: async () => {
-            const { data } = await axios.get(API_URL+ "/category-products/" + slug);
+            const { data } = await axios.get(API_URL+ "/category-products?query=" + slug);
             return data;
         },
         enabled: !!slug && enabled
