@@ -1,3 +1,12 @@
+export type SubCategoryType = {
+  id: number;
+  category_id: number;
+  name: string;
+  slug: string;
+  description: string;
+  image: string;
+}
+
 // auth types
 export type RegisterValuesType = {
   name: string;
@@ -31,10 +40,7 @@ export type CategoryType = {
   id: number;
   name: string;
   image: string;
-  status: string;
   slug: string;
-  created_at: string;
-  updated_at: string;
 };
 
 export type UserType = {

@@ -1,5 +1,5 @@
 "use client";
-import Navigation from "@/components/nevigation";
+import Navigation from "@/components/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import AppLogo from "@/assets/images/logo.png";
@@ -7,25 +7,10 @@ import { useState, useEffect } from "react";
 import {
   User,
   ShoppingCart,
-  Menu,
-  ChevronDown,
   Heart,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
+
 import WhatAppImage from "@/assets/images/whatsapp.png";
 import { Search as SearchIcon } from "lucide-react";
 import ProductSearch from "@/components/page/home/ProductSearch";
@@ -34,59 +19,9 @@ import DropdownCart from "@/components/DropdownCart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CategoryDropdown } from "@/components/CategoryDropdown";
 
-const categories = [
-  { id: 1, name: "All Category" },
-  { id: 2, name: "Women Fashion" },
-  { id: 3, name: "Men Fashion" },
-  { id: 4, name: "Electronics" },
-  { id: 5, name: "Accessories" },
-  { id: 6, name: "Home & Garden" },
-  { id: 7, name: "Health & Beauty" },
-  { id: 8, name: "Sports" },
-  { id: 9, name: "Toys & Kids" },
-];
-
-const components = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
 
 export default function Header() {
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [openCollapsible, setOpenCollapsible] = useState<string | null>(null);
   const [scrollDir, setScrollDir] = useState<string>("up");
   const [showSearchOnMobile, setShowSearchOnMobile] = useState(false);
@@ -215,6 +150,7 @@ export default function Header() {
         {/* bottom header */}
         <div className="flex items-center justify-between">
 
+          {/* Category Dropdown */}
           <CategoryDropdown />
 
           {/* navigation menu */}
