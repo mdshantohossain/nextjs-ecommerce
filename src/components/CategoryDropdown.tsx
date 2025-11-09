@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
-import { Menu, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
+import { Menu, ChevronDown, Sparkles } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -18,7 +18,6 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useCategories } from "@/hooks/api/useCategories";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { trucateString } from "@/utils/helper";
 
@@ -30,16 +29,23 @@ export function CategoryDropdown() {
 
   // hooks
   const { data: categories, isLoading } = useCategories();
-  const router = useRouter();
 
 useEffect(() => {
   function handleClickOutside(event: MouseEvent) {
-    if (
-      desktopDropdownRef.current &&
-      !desktopDropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsDesktopOpen(false);
+    const target = event.target as HTMLElement;
+
+    // If click is inside dropdown, do nothing
+    if (desktopDropdownRef.current?.contains(target)) {
+      return;
     }
+
+    // If user clicks a Next.js <Link> (navigation will handle closing)
+    if (target.closest("a")) {
+      return;
+    }
+
+    // Otherwise, close the dropdown
+    setIsDesktopOpen(false);
   }
 
   if (isDesktopOpen) {
