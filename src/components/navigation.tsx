@@ -3,14 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ChevronDown, Menu } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -33,68 +26,43 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const components = [
   {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
+    title: "Shop All Products",
+    href: "/products",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "Browse our full collection of products with detailed filters.",
   },
   {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    title: "Brands",
+    href: "/brands",
+    description: "Explore products by your favorite brands.",
   },
 ];
 
 const gettingStartedLinks = [
   {
-    title: "Introduction",
-    href: "/docs",
-    description: "Re-usable components built using Radix UI and Tailwind CSS.",
+    title: "Deals & Offers",
+    href: "/deals",
+    description: "Check out current deals, discounts, and special offers.",
   },
   {
-    title: "Installation",
-    href: "/docs/installation",
-    description: "How to install dependencies and structure your app.",
+    title: "New Arrivals",
+    href: "/new-arrivals",
+    description: "Discover the latest products added to our store.",
   },
   {
-    title: "Typography",
-    href: "/docs/primitives/typography",
-    description: "Styles for headings, paragraphs, lists...etc",
+    title: "Best Sellers",
+    href: "/best-sellers",
+    description: "Shop our most popular products among customers.",
   },
-];
-
-const moreLinks = [
-  { title: "About", href: "/about" },
-  { title: "Blog", href: "/blog" },
-  { title: "Contact", href: "/contact" },
-  { title: "Support", href: "/support" },
+  {
+    title: "Cupon Codes",
+    href: "/cupons",
+    description: "Give the perfect gift with our flexible gift cards.",
+  },
 ];
 
 export default function Navigation() {
@@ -102,6 +70,9 @@ export default function Navigation() {
   const [openCollapsible, setOpenCollapsible] = React.useState<string | null>(
     null
   );
+
+  // hooks 
+  const pathName = usePathname();
 
   const toggleCollapsible = (value: string) => {
     setOpenCollapsible(openCollapsible === value ? null : value);
@@ -113,31 +84,17 @@ export default function Navigation() {
       <div className="hidden md:flex">
         <NavigationMenu>
           <NavigationMenuList>
+
             <NavigationMenuItem>
               <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                  <li className="row-span-3">
-                    <NavigationMenuLink asChild>
-                      <Link
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        href="/"
-                      >
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          shadcn/ui
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          Beautifully designed components built with Radix UI
-                          and Tailwind CSS.
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </li>
-                  {gettingStartedLinks.map((link) => (
+                   {gettingStartedLinks.map((link) => (
                     <ListItem
                       key={link.title}
                       href={link.href}
                       title={link.title}
+                      pathName={pathName}
                     >
                       {link.description}
                     </ListItem>
@@ -147,7 +104,7 @@ export default function Navigation() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+              <NavigationMenuTrigger>Pages</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {components.map((component) => (
@@ -155,6 +112,7 @@ export default function Navigation() {
                       key={component.title}
                       title={component.title}
                       href={component.href}
+                      pathName={pathName}
                     >
                       {component.description}
                     </ListItem>
@@ -175,22 +133,23 @@ export default function Navigation() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-9 px-4 py-2">
-                    More
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  {moreLinks.map((link) => (
-                    <DropdownMenuItem key={link.title}>
-                      <Link href={link.href}>{link.title}</Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link href="/help"  className={cn('h-9 px-4 py-2 text-sm', pathName === '/help'? 'text-red-500 font-semibold': '')}>
+                Help
+              </Link>
             </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/contact" className={cn('h-9 px-4 py-2 text-sm', pathName === '/contact'? 'text-red-500 font-semibold': '')}>
+                Contact
+              </Link>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/about"  className={cn('h-9 px-4 py-2 text-sm', pathName === '/about'? 'text-red-500 font-semibold': '')}>
+                About
+              </Link>
+            </NavigationMenuItem>
+          
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -204,7 +163,11 @@ export default function Navigation() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]" onClick={(e) => e.stopPropagation()}>
+          <SheetContent
+            side="right"
+            className="w-[300px] sm:w-[400px]"
+            onClick={(e) => e.stopPropagation()}
+          >
             <SheetHeader>
               <SheetTitle>Navigation</SheetTitle>
             </SheetHeader>
@@ -300,7 +263,7 @@ export default function Navigation() {
               </Link>
 
               {/* More - Mobile */}
-              <Collapsible
+              {/* <Collapsible
                 open={openCollapsible === "more"}
                 onOpenChange={() => toggleCollapsible("more")}
               >
@@ -330,7 +293,7 @@ export default function Navigation() {
                     </Link>
                   ))}
                 </CollapsibleContent>
-              </Collapsible>
+              </Collapsible> */}
             </div>
           </SheetContent>
         </Sheet>
@@ -341,8 +304,9 @@ export default function Navigation() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<typeof Link> & { title: string }
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof Link> & { title: string, pathName: string }
+>(({ className, title, children, pathName, ...props }, ref) => {
+
   return (
     <li>
       <Link {...props} className="no-underline">
@@ -350,12 +314,12 @@ const ListItem = React.forwardRef<
           asChild
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
+            className, props.href === pathName ? 'bg-red-100' : ''
           )}
         >
           <div>
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            <div className={cn("text-sm font-medium leading-none", props.href === pathName ? 'text-red-600' : '')}>{title}</div>
+            <p className={cn("line-clamp-2 text-sm leading-snug text-muted-foreground",  props.href === pathName ? 'text-red-500' : '')}>
               {children}
             </p>
           </div>

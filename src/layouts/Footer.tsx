@@ -1,34 +1,20 @@
 "use client";
 import Link from "next/link";
-import {
-  MapPin,
-  Mail,
-  Phone,
-  Truck,
-  RotateCcw,
-  Headphones,
-} from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import { useAppSelector } from "@/features/hooks";
 import AppLogo from "@/assets/images/logo.png";
-import { Skeleton } from "@/components/ui/skeleton";
 import BrandSectionSkeleton from "@/components/skeleton/BrandSectionSkeleton";
 
 export default function Footer() {
   const usefulLinks = [
-    { title: "About Us", href: "/about" },
-    { title: "FAQ", href: "/faq" },
-    { title: "Location", href: "/location" },
-    { title: "Affiliates", href: "/affiliates" },
-    { title: "Contact", href: "/contact" },
+    { title: "FAQS", href: "/faqs" },
+    { title: "Privacy & Policy", href: "/privacy-policy" },
   ];
 
   const accountLinks = [
-    { title: "My Account", href: "/account" },
-    { title: "Discount", href: "/discount" },
-    { title: "Returns", href: "/returns" },
+    { title: "Dashboard", href: "/dashboard" },
     { title: "Orders History", href: "/orders" },
-    { title: "Order Tracking", href: "/tracking" },
   ];
 
   const socialLinks = [
@@ -165,55 +151,6 @@ export default function Footer() {
                   {social.name.charAt(0)}
                 </Link>
               ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="border-t bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Truck className="w-6 h-6 text-pink-600" />
-              </div>
-              <div>
-                <h5 className="font-semibold text-foreground mb-1">
-                  Free Delivery
-                </h5>
-                <p className="text-sm text-muted-foreground">
-                  Phasellus blandit massa enim elit of passage varius nunc.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <RotateCcw className="w-6 h-6 text-pink-600" />
-              </div>
-              <div>
-                <h5 className="font-semibold text-foreground mb-1">
-                  30 Day Returns Guarantee
-                </h5>
-                <p className="text-sm text-muted-foreground">
-                  Phasellus blandit massa enim elit of passage varius nunc.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Headphones className="w-6 h-6 text-pink-600" />
-              </div>
-              <div>
-                <h5 className="font-semibold text-foreground mb-1">
-                  27/4 Online Support
-                </h5>
-                <p className="text-sm text-muted-foreground">
-                  Phasellus blandit massa enim elit of passage varius nunc.
-                </p>
-              </div>
             </div>
           </div>
         </div>
