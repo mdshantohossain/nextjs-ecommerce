@@ -11,6 +11,8 @@ import noiseCancelHeadphones from "@/assets/images/noise-cancelling-headphones.p
 import premiumEarbuds from "@/assets/images/premium-wireless-earbuds.jpg";
 import latestGamingConsole from "@/assets/images/latest-gaming-console.jpg";
 import proGamingController from "@/assets/images/professional-gaming-controller.jpg";
+import facebook from "@/assets/images/facebook.png";
+import google from "@/assets/images/google.png";
 
 export default {
   gamingLaptop,
@@ -25,4 +27,6 @@ export default {
   premiumEarbuds,
   latestGamingConsole,
   proGamingController,
+  facebook,
+  google,    
 };
