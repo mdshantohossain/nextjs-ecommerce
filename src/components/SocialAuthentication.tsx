@@ -29,7 +29,7 @@ export default function SocialAuthentication() {
               dispatch(
                 loginSuccess({ user: res.data.user, token: res.data.token })
               );
-              toast.success("Login successfully with google");
+              toast.success("Login successful.");
               router.replace("/");
             }
           },
@@ -49,7 +49,7 @@ export default function SocialAuthentication() {
             dispatch(
               loginSuccess({ user: res.data.user, token: res.data.token })
             );
-            toast.success("Login successfully with facebook");
+            toast.success("Login successful.");
 
             router.replace("/");
           }

@@ -1,10 +1,9 @@
 "use client";
 import Link from "next/link";
 import { MapPin, Mail, Phone } from "lucide-react";
-import Image from "next/image";
 import { useAppSelector } from "@/features/hooks";
-import AppLogo from "@/assets/images/logo.png";
 import BrandSectionSkeleton from "@/components/skeleton/BrandSectionSkeleton";
+import AppLogo from "@/components/AppLogo";
 
 export default function Footer() {
   const usefulLinks = [
@@ -41,31 +40,7 @@ export default function Footer() {
             <BrandSectionSkeleton />
           ) : (
             <div className="lg:col-span-1">
-              <div className="flex items-center mb-4">
-                {appInfo?.logo ? (
-                  <div className="relative w-50 h-14">
-                    <Link href="/">
-                      <Image
-                        src={appInfo.logo}
-                        fill
-                        alt="App Logo"
-                        className="object-contain"
-                      />
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="relative w-50 h-14">
-                    <Link href="/">
-                      <Image
-                        src={AppLogo} // your local logo from assets
-                        fill
-                        alt="Default Logo"
-                        className="object-contain"
-                      />
-                    </Link>
-                  </div>
-                )}
-              </div>
+             <AppLogo />
               <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
                 {appInfo?.description}
               </p>

@@ -19,22 +19,38 @@ export type LoginValuesType = {
   password: string;
 };
 
+// cart/wishlist item
+export interface ItemType {
+    product_id: number;
+    name: string;
+    price: number;
+    image: string;
+    quantity?: number;
+    color?: string;
+    size?: string;
+    variant_id?: number;
+    slug: string;
+  }
+
 export type ResetPasswordType = {
   email: string;
 };
 
 // cart product type
 export type CartItemType = {
-  id: string;
+  id?: string;
+  product_id: number;
   name: string;
   price: number;
   quantity: number;
-  image?: string;
+  image: string;
+  variant_id?: number;
+  color?: string;
+  size?: string;
+  slug: string;
 };
-export type CartType = {
-  cartTotal: number;
-  items: CartItemType[];
-};
+
+export type WishlistType = Omit<CartItemType, "quantity">;
 
 export type CategoryType = {
   id: number;
@@ -43,7 +59,7 @@ export type CategoryType = {
   slug: string;
 };
 
-export type UserType = {
+ export type UserType = {
   id: number;
   name: string;
   email: string;
@@ -55,6 +71,7 @@ export type UserType = {
 export type ReviewType = {
   id: number;
   user_id: number;
+  name: string;
   product_id: number;
   user: UserType;
   rating?: string;
@@ -64,6 +81,15 @@ export type ReviewType = {
 
 export type OtherImageType = {
   id: string;
+  image: string;
+}
+
+export type VariantType = {
+  id: number;
+  vid?: string;
+  sku?: string;
+  color?: string;
+  variant_key?: string;
   image: string;
 }
 
@@ -87,10 +113,15 @@ export type ProductType = {
   status: number;
   created_at: string;
   updated_at: string;
+  variants_title: string;
   reviews: ReviewType[];
   other_images: OtherImageType[];
   colors: string[];
   sizes: string[];
   features: string[];
   tags: string[];
+  reviews_count: number;
+  reviews_avg_rating: string|null;
+  variants: VariantType[],
+  variant_json?: string
 };

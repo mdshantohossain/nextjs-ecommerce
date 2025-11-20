@@ -19,30 +19,6 @@ interface OrderItem {
   total: number;
 }
 
-const orderItems: OrderItem[] = [
-  {
-    id: "1",
-    name: "Blue Dress For Woman",
-    quantity: 2,
-    price: 45.0,
-    total: 90.0,
-  },
-  {
-    id: "2",
-    name: "Lether Gray Tuxedo",
-    quantity: 1,
-    price: 55.0,
-    total: 55.0,
-  },
-  {
-    id: "3",
-    name: "Woman Full Sleeve Dress",
-    quantity: 3,
-    price: 68.0,
-    total: 204.0,
-  },
-];
-
 export default function CheckoutPage() {
   const [billingDetails, setBillingDetails] = useState({
     firstName: "",
@@ -90,11 +66,12 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="bg-background">
+      <div className="container mx-auto px-4 py-8">
       {/* 🔹 Modal Section */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative animate-fadeIn">
+          <div className="bg-card rounded-lg shadow-3xl w-full max-w-md p-6 relative animate-fadeIn">
             {/* Close button */}
             <button
               type="button"
@@ -238,6 +215,7 @@ export default function CheckoutPage() {
           <CartDetail />
         </div>
       </div>
+    </div>
     </div>
   );
 }

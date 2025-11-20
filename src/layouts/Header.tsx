@@ -2,36 +2,63 @@
 import Navigation from "@/components/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import AppLogo from "@/assets/images/logo.png";
 import { useState, useEffect } from "react";
-import {
-  User,
-  ShoppingCart,
-  Heart,
-} from "lucide-react";
-
+import { User, ShoppingCart, Heart, Sun, Moon } from "lucide-react";
 
 import WhatAppImage from "@/assets/images/whatsapp.png";
 import { Search as SearchIcon } from "lucide-react";
 import ProductSearch from "@/components/page/home/ProductSearch";
 import { useAppSelector } from "@/features/hooks";
 import DropdownCart from "@/components/DropdownCart";
-import { Skeleton } from "@/components/ui/skeleton";
 import { CategoryDropdown } from "@/components/CategoryDropdown";
-
+import AppLogo from "@/components/AppLogo";
+import { RootState } from "@/features/store";
 
 export default function Header() {
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
   const [openCollapsible, setOpenCollapsible] = useState<string | null>(null);
   const [scrollDir, setScrollDir] = useState<string>("up");
   const [showSearchOnMobile, setShowSearchOnMobile] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   // hooks
   const { cartTotal, items } = useAppSelector((state) => state.cart);
-  const { data: appInfo, isLoading } = useAppSelector((state) => state.app);
+  const wishlist = useAppSelector((state) => state.wishlist);
+
   const toggleCollapsible = (value: string) => {
     setOpenCollapsible(openCollapsible === value ? null : value);
   };
+
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+
+    if (savedDarkMode !== null) {
+      const isDarkMode = savedDarkMode === "true";
+      setIsDark(isDarkMode);
+
+      if (isDarkMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      return;
+    }
+
+    // 2️⃣ No saved preference → detect system theme
+    const osPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    setIsDark(osPrefersDark);
+    if (osPrefersDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    // 3️ Optionally save the system preference to localStorage
+    localStorage.setItem("darkMode", String(osPrefersDark));
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -55,45 +82,29 @@ export default function Header() {
     };
   }, []);
 
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDark;
+
+    setIsDark(newDarkMode);
+    localStorage.setItem("darkMode", String(newDarkMode));
+
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
   return (
     <header
       className={`border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 transition-transform duration-300 ${
         scrollDir === "down" ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      {/* <div className="bg-gray-200 w-full h-10 items-center flex">
-      dark mode here  | language mode 
-     </div> */}
-      <div className="container mx-auto px-4 pb-2">
-        <div className="flex items-center justify-between py-1">
+      <div className="container mx-auto pb-2">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
-            {isLoading ? (
-              <Skeleton className="w-50 h-12" />
-            ) : appInfo?.logo ? (
-              <div className="relative w-50 h-14">
-                <Link href="/">
-                  <Image
-                    src={appInfo.logo}
-                    fill
-                    alt="App Logo"
-                    className="object-contain"
-                  />
-                </Link>
-              </div>
-            ) : (
-              <div className="relative w-50 h-14">
-                <Link href="/">
-                  <Image
-                    src={AppLogo} // your local logo from assets
-                    fill
-                    alt="Default Logo"
-                    className="object-contain"
-                  />
-                </Link>
-              </div>
-            )}
-          </div>
+          <AppLogo location />
 
           {/* Search Bar */}
           <div className="w-[30%] hidden md:block">
@@ -101,17 +112,24 @@ export default function Header() {
           </div>
 
           {/* Right Icons */}
-          <div className="flex items-center gap-4 md:gap-8">
+          <div className="flex items-center gap-4 md:gap-4">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 hover:bg-muted rounded-lg transition"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             {/* User Icon */}
             <Link href="/dashboard">
-              <User className="w-6 h-6" />
+              <User className="w-5 h-5" />
             </Link>
 
             {/* Wishlist Icon with Badge */}
-            <Link href="/wishlist" title="Wishlist" className="relative">  
-              <Heart className="w-6 h-6" />
+            <Link href="/wishlist" title="Wishlist" className="relative">
+              <Heart className="w-5 h-5" />
               <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {0}
+                {wishlist.length}
               </span>
             </Link>
 
@@ -122,7 +140,7 @@ export default function Header() {
               onMouseLeave={() => setIsCartDropdownOpen(false)}
             >
               <div className="relative">
-                <ShoppingCart className="w-6 h-6" />
+                <ShoppingCart className="w-5 h-5" />
                 <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {items.length}
                 </span>
@@ -149,7 +167,6 @@ export default function Header() {
 
         {/* bottom header */}
         <div className="flex items-center justify-between">
-
           {/* Category Dropdown */}
           <CategoryDropdown />
 

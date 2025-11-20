@@ -14,7 +14,7 @@ export default function useSubCategoryProduct({
     queryKey: ["sub-category-products", slug],
     queryFn: async () => {
       const { data } = await axios.get(API_URL + "/sub-category-products?query=" + slug);
-      return data;
+      return data.data;
     },
     enabled: !!slug && enabled,
   });

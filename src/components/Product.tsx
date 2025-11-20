@@ -1,72 +1,73 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Heart, ShoppingCart } from "lucide-react";
+import { DollarSign, Heart, ShoppingBag, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ProductType } from "@/types";
 import Link from "next/link";
-import { addToCartItem } from "@/features/cartSlice";
-import { useAppDispatch } from "@/features/hooks";
-import { toast } from "react-toastify";
-import { useState } from "react";
+import renderStars from "./generateStarts";
+import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useAppSelector } from "@/features/hooks";
 
 export default function Product({ product }: { product: ProductType }) {
-  const [wishlist, setWishlist] = useState<number[]>([3]);
-  const toggleWishlist = (productId: number) => {
-    setWishlist((prev) =>
-      prev.includes(productId)
-        ? prev.filter((id) => id !== productId)
-        : [...prev, productId]
-    );
-  };
-
+  // hooks
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isExistsOnCart, addToCart } = useCart();
+  const { isExistsOnWishlist, addWishlist } = useWishlist();
+
+  const isExistedToCart = isExistsOnCart(product.id);
+  const isWishlisted = isExistsOnWishlist(product.id);
+
+  // handle add to wishlist
+  const addToWishlist = (product: ProductType) => {
+    if (!isAuthenticated) return router.push("/login");
+
+    addWishlist({
+      product_id: product.id,
+      name: product.name,
+      price: product.selling_price,
+      image: product.main_image,
+      slug: product.slug,
+    });
+  };
 
   // handle add to cart
   const handleAddToCart = (product: ProductType) => {
-    dispatch(addToCartItem(product));
-    toast.success("Product added to cart");
+    if (!isExistedToCart) {
+      addToCart({
+        product_id: product.id,
+        name: product.name,
+        price: product.selling_price,
+        image: product.main_image,
+        slug: product.slug,
+      });
+    }
   };
-
   // handle checkout
-  const handleCheckout = (product: ProductType) => {
+  const handleShopNow = (product: ProductType) => {
     handleAddToCart(product);
-    router.push("/checkout");
+    return router.push("/checkout");
   };
-
-  // const renderStars = (rating: number) => {
-  //   return Array.from({ length: 5 }, (_, index) => (
-  //     <Star
-  //       key={index}
-  //       className={cn(
-  //         "w-4 h-4",
-  //         index < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-  //       )}
-  //     />
-  //   ));
-  // };
 
   return (
     <div className="group relative bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      {/* Product Badge */}
-      {/* {product.badge && (
-        <Badge className="absolute top-3 left-3 z-10 bg-red-500 hover:bg-red-600 text-white">
-          {product.badge}
-        </Badge>
-      )} */}
-
       {/* Wishlist Button */}
       <button
-        onClick={() => toggleWishlist(product.id)}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors"
+        onClick={(e) => {
+          e.stopPropagation();
+          addToWishlist(product);
+        }}
+        className="absolute top-1 right-1 z-10 p-1 cursor-pointer"
         aria-label="Add to wishlist"
+        disabled={isWishlisted}
       >
         <Heart
           className={cn(
             "w-5 h-5 transition-colors",
-            wishlist.includes(product.id)
+            isWishlisted
               ? "fill-red-500 text-red-500"
               : "text-gray-600 hover:text-red-500"
           )}
@@ -76,10 +77,10 @@ export default function Product({ product }: { product: ProductType }) {
       {/* Product Image */}
 
       <Link href={`/products/${product.slug}`}>
-        <div className="aspect-square relative overflow-hidden bg-gray-50 dark:bg-gray-800 group">
+        <div className="h-60 relative overflow-hidden bg-gray-50 dark:bg-gray-800 group">
           <Image
             src={product.main_image}
-            alt={product.main_image}
+            alt={product.name}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
           />
@@ -89,23 +90,47 @@ export default function Product({ product }: { product: ProductType }) {
       {/* Product Info */}
       <div className="p-4">
         <h3
-          className="font-medium text-foreground mb-2 line-clamp-2 hover:cursor-pointer"
+          className="text-foreground mb-1 line-clamp-4 hover:cursor-pointer"
           onClick={() => router.push(`/products/${product.slug}`)}
         >
           {product.name}
         </h3>
 
-        {/* Price */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-2xl">
-            ${product.selling_price}
+        
+        {/* Rating */}
+        <div className="flex gap-2 mb-1">
+          <div className="flex items-center">
+            <span className="text-xs">{product.reviews_avg_rating}</span>
+            {renderStars(product.reviews_avg_rating)}
+          </div>
+
+          <span className="text-xs  text-muted-foreground">
+            ({product?.reviews_count || 0})
           </span>
+        </div>
+
+        {/* Description */}
+        <span className="text-gray-300 ">
+          3k+ sold 
+        </span>
+
+        {/* Price */}
+        <div className="flex items-center gap-2 mb-1">
+          {/* <sup className="text-xl">$</sup> */}
+
+          <div className="flex gap-1">
+            <span className="text-lg align-super">$</span>
+            <span className="text-3xl font-semibold">
+              {product.selling_price}
+            </span>
+            <span className="text-sm align-super">99</span>
+          </div>
           {product.regular_price && (
             <span className="text-sm text-muted-foreground line-through">
-            ${product.regular_price}
-          </span>
+              ${product.regular_price}
+            </span>
           )}
-          
+
           {product.discount && (
             <span className="text-sm font-medium text-green-600">
               {product.discount} Off
@@ -113,28 +138,29 @@ export default function Product({ product }: { product: ProductType }) {
           )}
         </div>
 
-        {/* Rating */}
-        <div className="flex items-center gap-2 mb-4">
-          {/* <div className="flex items-center">{renderStars(product.reviews)}</div> */}
-          <span className="text-sm text-muted-foreground">
-            ({product?.reviews ? product.reviews.length: 0})
-          </span>
+        <div className="mb-2">
+          <span>Free delivery</span>
         </div>
 
         {/* Action Buttons */}
         <div className="space-y-2">
           <Button
+            disabled={isExistedToCart}
             onClick={() => handleAddToCart(product)}
             className="w-full"
             variant="outline"
             size="sm"
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            Add to Cart
+            {isExistedToCart ? (
+              <ShoppingBag className="w-4 h-4 mr-2" />
+            ) : (
+              <ShoppingCart className="w-4 h-4 mr-2" />
+            )}
+            {isExistedToCart ? "Added to Cart" : "Add to Cart"}
           </Button>
           <Button
-            onClick={() => handleCheckout(product)}
-            className="w-full bg-red-500 hover:bg-red-600 text-white"
+            onClick={() => handleShopNow(product)}
+            className="w-full bg-red-600 hover:bg-red-500 text-white"
             size="sm"
           >
             Shop Now

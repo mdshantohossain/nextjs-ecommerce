@@ -15,7 +15,7 @@ export default function ProductSearch() {
   };
 
   return (
-    <div className="flex items-center w-full max-w-lg border border-gray-300 rounded-sm bg-white shadow-sm focus-within:border-red-500 transition-colors">
+    <div className="flex items-center w-full max-w-lg border border-gray-300 rounded-sm bg-background/50 shadow-sm focus-within:border-red-500 transition-colors">
       {/* Search Icon */}
       <div className="pl-3 pr-2 text-gray-400 flex items-center">
         <Search className="h-5 w-5" />

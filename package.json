@@ -41,11 +41,13 @@
     "react": "^19.1.1",
     "react-dom": "^19.0.0",
     "react-facebook-login": "^4.1.1",
+    "react-medium-image-zoom": "^5.4.0",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "shadcn": "^2.10.0",
     "tailwind-merge": "^3.3.0",
+    "uuid": "^13.0.0",
     "yup": "^1.7.1",
     "zod": "^3.25.76"
   },

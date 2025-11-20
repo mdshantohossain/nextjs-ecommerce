@@ -10,7 +10,7 @@ export default function CartDetail() {
     <div className="bg-card border rounded-lg p-6 h-fit">
       {items.length > 0 ? (
         <>
-          <h2 className="text-xl font-semibold mb-6">Your Orders</h2>
+          <h2 className="text-xl font-semibold mb-6">Order Summary</h2>
 
           {/* Order Items */}
           <div className="space-y-4">

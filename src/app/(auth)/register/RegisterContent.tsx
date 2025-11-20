@@ -74,7 +74,7 @@ export default function RegisterContent({
   ) : (
     <>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-900">
+        <CardTitle className="text-2xl font-bold text-foreground">
           Registration
         </CardTitle>
       </CardHeader>

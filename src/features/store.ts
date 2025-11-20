@@ -4,11 +4,13 @@ import categoryReducer from "@/features/categorySlice";
 import productReducer from "@/features/productSlice";
 import appReducer from "@/features/appSlice";
 import authReducer from "@/features/authSlice";
+import wishlistReducer from "@/features/wishlilstSlice";
+import currentLocationReducer from "@/features/currentLocationSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
 const persistConfig = {
-  key: "root",
+  key: "auth",
   storage,
   whitelist: ["app", "auth", "cart"],
 };
@@ -19,12 +21,14 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   categories: categoryReducer,
   products: productReducer,
+  wishlist: wishlistReducer,
+  currentLocation: currentLocationReducer,
 });
 
-const persistedRootReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedRootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: false,
