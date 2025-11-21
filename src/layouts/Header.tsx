@@ -12,11 +12,9 @@ import { useAppSelector } from "@/features/hooks";
 import DropdownCart from "@/components/DropdownCart";
 import { CategoryDropdown } from "@/components/CategoryDropdown";
 import AppLogo from "@/components/AppLogo";
-import { RootState } from "@/features/store";
 
 export default function Header() {
   const [isCartDropdownOpen, setIsCartDropdownOpen] = useState(false);
-  const [openCollapsible, setOpenCollapsible] = useState<string | null>(null);
   const [scrollDir, setScrollDir] = useState<string>("up");
   const [showSearchOnMobile, setShowSearchOnMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -25,9 +23,6 @@ export default function Header() {
   const { cartTotal, items } = useAppSelector((state) => state.cart);
   const wishlist = useAppSelector((state) => state.wishlist);
 
-  const toggleCollapsible = (value: string) => {
-    setOpenCollapsible(openCollapsible === value ? null : value);
-  };
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode");
@@ -44,7 +39,7 @@ export default function Header() {
       return;
     }
 
-    // 2️⃣ No saved preference → detect system theme
+    //  No saved preference → detect system theme
     const osPrefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
@@ -56,7 +51,7 @@ export default function Header() {
       document.documentElement.classList.remove("dark");
     }
 
-    // 3️ Optionally save the system preference to localStorage
+    // save the system preference to localStorage
     localStorage.setItem("darkMode", String(osPrefersDark));
   }, []);
 

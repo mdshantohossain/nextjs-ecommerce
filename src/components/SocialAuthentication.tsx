@@ -18,7 +18,7 @@ export default function SocialAuthentication() {
   const socialLoginMutation = useSocialLoginMutation();
   const router = useRouter();
 
-  // Google login handler using custom button
+  // Google login handler
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       socialLoginMutation.mutate(
@@ -91,7 +91,7 @@ export default function SocialAuthentication() {
         onClick={() => loginWithGoogle()}
       >
         <Image src={images.google} alt="Google" width={20} height={20} />
-        <span className="text-[16px] font-semibold text-gray-700">Google</span>
+        <span className="text-[16px] font-semibold text-orange">Google</span>
       </Button>
     </div>
   );

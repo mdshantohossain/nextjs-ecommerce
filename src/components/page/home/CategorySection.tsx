@@ -15,7 +15,7 @@ export default function CategorySection() {
   }
 
   return (
-    <div className="px-4 py-10 bg-card">
+    <div className="py-5 bg-card rounded-md">
       {/* Title */}
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-foreground">
