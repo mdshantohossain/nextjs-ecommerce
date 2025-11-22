@@ -12,13 +12,14 @@ import { FACEBOOK_CLIENT_ID } from "@/config/api";
 import { useSocialLoginMutation } from "@/hooks/api/socialLogin";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from "react-facebook-login";
 
 export default function SocialAuthentication() {
   const dispatch = useDispatch();
   const socialLoginMutation = useSocialLoginMutation();
   const router = useRouter();
 
-  // Google login handler using custom button
+  // Google login handler
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       socialLoginMutation.mutate(
@@ -29,7 +30,7 @@ export default function SocialAuthentication() {
               dispatch(
                 loginSuccess({ user: res.data.user, token: res.data.token })
               );
-              toast.success("Login successfully with google");
+              toast.success("Login successful.");
               router.replace("/");
             }
           },
@@ -40,16 +41,19 @@ export default function SocialAuthentication() {
   });
 
   // Facebook login handler
-  const handleFacebookResponse = async (response: any) => {
+  const handleFacebookResponse = async ( userInfo: ReactFacebookLoginInfo | ReactFacebookFailureResponse
+): Promise<void> => {
+  if("accessToken" in userInfo) {
+    const accessToken = userInfo.accessToken;
     socialLoginMutation.mutate(
-      { provider: "facebook", token: response.accessToken },
+      { provider: "facebook", token: accessToken },
       {
         onSuccess: (res) => {
           if (res.success) {
             dispatch(
               loginSuccess({ user: res.data.user, token: res.data.token })
             );
-            toast.success("Login successfully with facebook");
+            toast.success("Login successful.");
 
             router.replace("/");
           }
@@ -57,7 +61,11 @@ export default function SocialAuthentication() {
         onError: (err) => console.error("Facebook login failed:", err),
       }
     );
-  };
+  } else {
+
+  }
+
+}
 
   return (
     <div className="grid grid-cols-2 gap-3">
@@ -91,7 +99,7 @@ export default function SocialAuthentication() {
         onClick={() => loginWithGoogle()}
       >
         <Image src={images.google} alt="Google" width={20} height={20} />
-        <span className="text-[16px] font-semibold text-gray-700">Google</span>
+        <span className="text-[16px] font-semibold text-orange">Google</span>
       </Button>
     </div>
   );

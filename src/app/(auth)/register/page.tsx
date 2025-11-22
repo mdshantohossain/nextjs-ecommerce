@@ -12,7 +12,7 @@ export default function RegistrationPage() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 px-4 py-10">
+    <div className="flex items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md">
         <RegisterContent onPressSignUp={handlePressOnSignUp} />
       </Card>

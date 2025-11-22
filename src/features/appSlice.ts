@@ -1,5 +1,6 @@
 import { API_URL } from "@/config/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 interface AppInfoType {
   isLoading: boolean;
@@ -17,9 +18,8 @@ interface AppInfoType {
 }
 
 export const fetchAppInfo = createAsyncThunk("app/fetchAppInfo", async () => {
-  const response = await fetch(API_URL + "/app-info");
-  const data = await response.json();
-  return data;
+  const { data } = await axios.get(API_URL + "/app-info");
+  return data.data;
 });
 
 const initialState: AppInfoType = {} as AppInfoType;

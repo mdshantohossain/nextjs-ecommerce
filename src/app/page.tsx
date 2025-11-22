@@ -4,13 +4,14 @@ import TrendingProducts from "@/components/page/home/TrendingProducts";
 import BrandSlideSection from "@/components/page/home/BrandSlideSection";
 import CategorySection from "@/components/page/home/CategorySection";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/features/hooks";
+import { useAppDispatch } from "@/features/hooks";
 import { fetchCategories } from "@/features/categorySlice";
 import { fetchProducts } from "@/features/productSlice";
 import TestimonialsSection from "@/components/page/home/TestimonialsSection";
 import Slider from "@/components/page/home/Slider";
 import { fetchAppInfo } from "@/features/appSlice";
 import AddSection from "@/components/page/home/AddSection";
+import Cookies from 'js-cookie';
 
 const images = [
   {
@@ -34,9 +35,8 @@ const images = [
 export default function HomePage() {
   const dispatch = useAppDispatch();
 
-  const auth = useAppSelector((state) => state.auth);
-
   useEffect(() => {
+    // Cookies.remove("auth_token");
     dispatch(fetchCategories());
     dispatch(fetchProducts());
     dispatch(fetchAppInfo());

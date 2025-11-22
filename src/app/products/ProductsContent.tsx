@@ -28,6 +28,8 @@ import { ProductType } from "@/types";
 import EmptyContent from "@/components/EmptyContent";
 import EmptyProduct from "@/assets/images/search.png";
 import useSubCategoryProduct from "@/hooks/api/useSubCategoryProduct";
+
+
 export default function ProductsContent() {
   const [sortBy, setSortBy] = useState<string>("default");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -55,7 +57,10 @@ export default function ProductsContent() {
   // pagination calculations
   const totalPages = Math.ceil(products.length / perPageItems);
   const startIndex = (currentPage - 1) * perPageItems;
-  const currentProducts = products.slice(startIndex, startIndex + perPageItems);
+  const currentProducts = products?.slice(
+    startIndex,
+    startIndex + perPageItems
+  );
 
   // handle page change
   const handlePageChange = (page: number): void => {
@@ -181,8 +186,8 @@ export default function ProductsContent() {
         <div
           className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3`}
         >
-          {currentProducts.map((product: ProductType) => (
-            <Product key={product.id} product={product} />
+          {currentProducts.map((product: ProductType, index: number) => (
+            <Product key={index} product={product} />
           ))}
         </div>
 

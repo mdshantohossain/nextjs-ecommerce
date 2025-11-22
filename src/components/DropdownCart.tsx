@@ -3,11 +3,9 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
-import { useAppDispatch } from "@/features/hooks";
-import { removeCartItem } from "@/features/cartSlice";
-import { toast } from "react-toastify";
 import EmptyCart from "./EmptyCart";
 import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
 
 interface DropdownCartProps {
   items: CartItemType[];
@@ -21,22 +19,17 @@ export default function DropdownCart({
   setIsCartDropdownOpen,
 }: DropdownCartProps) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
-  // handle item remove
-  const removeItem = (id: string) => {
-    dispatch(removeCartItem(id));
-    toast.success("Product removed from cart");
-  };
+  const { removeCartItem } = useCart();
 
   // handle navigation
   const handleNavigation = (path: string) => {
     setIsCartDropdownOpen(false);
-    router.push(path);
+    return router.push(path);
   };
 
   return (
-    <div className="absolute right-0 top-4 mt-2 w-80 sm:w-96 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-w-[calc(100vw-2rem)] sm:max-w-none transform translate-x-4 sm:translate-x-0">
+    <div className="absolute right-0 top-4 mt-2 w-80 sm:w-96 bg-background border-gray-200 rounded-lg shadow-xl z-50 max-w-[calc(100vw-2rem)] sm:max-w-none transform translate-x-4 sm:translate-x-0">
       <div className="p-4">
         {items.length > 0 ? (
           <>
@@ -57,7 +50,7 @@ export default function DropdownCart({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2">
+                    <h4 className="font-medium text-sm sm:text-base text-foreground line-clamp-2">
                       {item.name}
                     </h4>
                     <div className="flex items-center justify-between mt-1">
@@ -67,8 +60,8 @@ export default function DropdownCart({
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeItem(item.id)}
-                        className="w-6 h-6 text-gray-400 hover:text-red-500 flex-shrink-0"
+                        onClick={() => removeCartItem(item.id!)}
+                        className="w-6 h-6 text-gray-400 hover:text-red-500 flex-shrink-0 hover:cursor-pointer"
                       >
                         <X className="w-4 h-4" />
                       </Button>
@@ -80,7 +73,7 @@ export default function DropdownCart({
 
             {/* Subtotal */}
             <div className="flex items-center justify-between py-3 border-t border-gray-200">
-              <span className="font-semibold text-gray-800 text-sm sm:text-base">
+              <span className="font-semibold text-foreground text-sm sm:text-base">
                 Subtotal:
               </span>
               <span className="font-bold text-lg sm:text-xl text-red-500">
@@ -92,7 +85,7 @@ export default function DropdownCart({
             <div className="flex flex-col sm:flex-row gap-2 mt-4">
               <Button
                 variant="outline"
-                className="flex-1 text-sm py-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white bg-transparent"
+                className="flex-1 text-sm py-2 border-gray-800 text-foreground hover:bg-gray-800 hover:text-white bg-transparent"
                 onClick={() => handleNavigation("/cart")}
               >
                 View Cart

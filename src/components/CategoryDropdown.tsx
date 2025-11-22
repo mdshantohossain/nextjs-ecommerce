@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
-import { Menu, ChevronDown, Sparkles } from "lucide-react";
+import { Menu, ChevronDown, Sparkles, ArrowRight } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -20,6 +20,11 @@ import Image from "next/image";
 import { useCategories } from "@/hooks/api/useCategories";
 import Link from "next/link";
 import { trucateString } from "@/utils/helper";
+import { useCart } from "@/hooks/useCart";
+import { ProductType } from "@/types";
+import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import useCurrentUrl from "@/hooks/useCurrentUrl";
 
 export function CategoryDropdown() {
   const [isDesktopOpen, setIsDesktopOpen] = useState(false);
@@ -29,44 +34,57 @@ export function CategoryDropdown() {
 
   // hooks
   const { data: categories, isLoading } = useCategories();
+  const { isExistsOnCart, addToCart } = useCart();
+  const router = useRouter();
+  const { isSubCategoryActive, isCategoryActive } = useCurrentUrl();
 
-useEffect(() => {
-  function handleClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
 
-    // If click is inside dropdown, do nothing
-    if (desktopDropdownRef.current?.contains(target)) {
-      return;
+      // If click is inside dropdown, do nothing
+      if (desktopDropdownRef.current?.contains(target)) {
+        return;
+      }
+
+      // If user clicks a Next.js <Link> (navigation will handle closing)
+      if (target.closest("a")) {
+        return;
+      }
+
+      // Otherwise, close the dropdown
+      setIsDesktopOpen(false);
     }
 
-    // If user clicks a Next.js <Link> (navigation will handle closing)
-    if (target.closest("a")) {
-      return;
+    if (isDesktopOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     }
-
-    // Otherwise, close the dropdown
-    setIsDesktopOpen(false);
-  }
-
-  if (isDesktopOpen) {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }
-}, [isDesktopOpen]);
+  }, [isDesktopOpen]);
 
   const selectedCategory = categories?.find((c) => c.id === hoveredCategory);
 
   // handle shop now
-  const handleShopNow = () => {
-    console.log("pressed on shop now");
+  const handleShopNow = (product: ProductType) => {
+    isDesktopOpen ? setIsDesktopOpen(false) : setIsMobileOpen(false);
+    if (!isExistsOnCart(product.id)) {
+      addToCart({
+        product_id: product.id,
+        name: product.name,
+        price: product.selling_price,
+        image: product.main_image,
+        slug: product.slug,
+      });
+    }
+
+    return router.push("/checkout");
   };
 
   return (
-    <div  className="relative">
+    <div className="relative">
       {/* ---------- DESKTOP DROPDOWN ---------- */}
-
       <div ref={desktopDropdownRef} className="hidden md:flex">
         <div
           onClick={() => setIsDesktopOpen(!isDesktopOpen)}
@@ -91,7 +109,7 @@ useEffect(() => {
             style={{ minHeight: "auto" }}
           >
             {/* Categories List - CHANGE: Responsive height and width */}
-            <div className="w-full md:w-72 bg-white border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto max-h-72 md:max-h-96 ">
+            <div className="w-full md:w-72 border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto max-h-72 md:max-h-96">
               {categories?.map((category) => (
                 <Link
                   href={`/products?category=${category.slug}`}
@@ -234,18 +252,25 @@ useEffect(() => {
                                 <span className="text-base md:text-lg font-bold text-red-600">
                                   ${categoryProduct.selling_price.toFixed(0)}
                                 </span>
-                                <span className="text-xs md:text-sm text-gray-400 line-through">
-                                  ${categoryProduct.regular_price.toFixed(0)}
-                                </span>
+                                {categoryProduct.regular_price && (
+                                  <span className="text-xs md:text-sm text-gray-400 line-through">
+                                    ${categoryProduct.regular_price.toFixed(0)}
+                                  </span>
+                                )}
                               </div>
 
                               {/* CTA Button */}
-                              <button
-                                onClick={() => handleShopNow()}
-                                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 transform group-hover:scale-105"
+                              <Link
+                                href={`/checkout`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleShopNow(categoryProduct);
+                                }}
                               >
-                                Shop Now
-                              </button>
+                                <Button className="w-full bg-gradient-to-r hover:cursor-pointer from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 transform group-hover:scale-105">
+                                  Shop Now
+                                </Button>
+                              </Link>
                             </div>
                           </div>
                         ))}
@@ -273,7 +298,7 @@ useEffect(() => {
           </SheetTrigger>
           <SheetContent side="left" className="w-[85%] sm:w-[350px] p-0">
             <SheetHeader className="p-4 border-b border-gray-200">
-              <SheetTitle className="text-lg font-bold text-gray-900">
+              <SheetTitle className="text-lg font-bold text-foreground">
                 All Categories
               </SheetTitle>
             </SheetHeader>
@@ -292,11 +317,15 @@ useEffect(() => {
                   <CollapsibleTrigger asChild>
                     <button
                       type="button"
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-md  transition-colors ${
+                        isCategoryActive(category.slug)
+                          ? "bg-red-500"
+                          : "bg-card"
+                      }`}
                     >
                       <Link href={`/products?category=${category.slug}`}>
                         <div
-                          className="flex items-center gap-2 bg-green-500"
+                          className="flex items-center gap-2"
                           onClick={() => setIsMobileOpen(false)}
                         >
                           <Image
@@ -305,7 +334,7 @@ useEffect(() => {
                             width={20}
                             height={20}
                           />
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-foreground">
                             {category.name}
                           </span>
                         </div>
@@ -315,21 +344,27 @@ useEffect(() => {
                         className={cn(
                           "text-gray-400 flex-shrink-0",
                           hoveredCategory === category.id
-                            ? "rotate-180 text-red-500"
+                            ? "rotate-180 text-red-500 transation-all duration-200"
                             : ""
                         )}
                       />
                     </button>
                   </CollapsibleTrigger>
-                  <CollapsibleContent className="px-4 py-2 bg-white rounded-md border border-gray-100 mt-1 space-y-2">
+                  <CollapsibleContent className="px-2 py-1 bg-card rounded-md border mt-1 space-y-2">
                     {category?.sub_categories.map((sub) => (
                       <Link
-                        href={`/products?sub-category${sub.slug}`}
+                        href={`/products?sub-category=${sub.slug}`}
                         key={sub.id}
                         onClick={() => setIsMobileOpen(false)}
                       >
-                        <div className="pl-4 py-2 text-sm text-gray-700 hover:text-red-600 cursor-pointer">
-                          {sub.name}
+                        <div
+                          className={`px-2 py-2 text-sm text-foreground hover:text-red-600 cursor-pointer flex justify-between items-center ${
+                            isSubCategoryActive(sub.slug)
+                              ? "bg-red-400"
+                              : "bg-background/50"
+                          } my-1 rounded-md`}
+                        >
+                          {sub.name} <ArrowRight size={14} />
                         </div>
                       </Link>
                     ))}
@@ -346,7 +381,7 @@ useEffect(() => {
                           {category?.products.map((categoryProduct) => (
                             <div
                               key={categoryProduct.id}
-                              className="flex-shrink-0 w-44 sm:w-52 bg-white rounded-xl border border-red-100 hover:border-red-300 hover:shadow-lg transition-all duration-200 overflow-hidden group cursor-pointer snap-center"
+                              className="flex-shrink-0 w-44 sm:w-52 rounded-xl border border-red-100 hover:border-red-300 hover:shadow-lg transition-all duration-200 overflow-hidden group cursor-pointer snap-center"
                             >
                               {/* Image Container */}
                               <div className="relative bg-gradient-to-br from-gray-100 to-gray-50 h-28 md:h-36 overflow-hidden">
@@ -368,13 +403,6 @@ useEffect(() => {
                                     -{categoryProduct.discount}
                                   </div>
                                 )}
-
-                                {/* Optional Badge */}
-                                {/* {offer.badge && (
-                                  <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-400 to-red-400 text-white px-2 py-0.5 rounded-full text-xs font-semibold shadow-md">
-                                    {offer.badge}
-                                  </div>
-                                )} */}
                               </div>
 
                               {/* Offer Details */}
@@ -382,27 +410,37 @@ useEffect(() => {
                                 <Link
                                   href={`/products/${categoryProduct.slug}`}
                                   onClick={() => setIsMobileOpen(false)}
-                                  className="text-xs md:text-sm font-semibold text-gray-900 line-clamp-2 mb-1 group-hover:text-red-600 transition-colors"
+                                  className="text-xs md:text-sm font-semibold line-clamp-2 mb-1 group-hover:text-red-600 transition-colors"
                                 >
-                                  {trucateString(categoryProduct.name, 40)}
+                                  {categoryProduct.name}
                                 </Link>
 
                                 <div className="flex items-center gap-2 mb-2">
-                                  <span className="text-sm font-bold text-red-600">
+                                  <span className="text-sm font-bold">
                                     ${categoryProduct.selling_price?.toFixed(0)}
                                   </span>
-                                  <span className="text-xs text-gray-400 line-through">
-                                    ${categoryProduct.regular_price?.toFixed(0)}
-                                  </span>
+                                  {categoryProduct.regular_price && (
+                                    <span className="text-xs text-gray-400 line-through">
+                                      $
+                                      {categoryProduct.regular_price?.toFixed(
+                                        0
+                                      )}
+                                    </span>
+                                  )}
                                 </div>
 
                                 {/* Shop Button */}
-                                <button
-                                  onClick={() => handleShopNow()}
-                                  className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 transform group-hover:scale-105"
+                                <Link
+                                  href={`/checkout`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleShopNow(categoryProduct);
+                                  }}
                                 >
-                                  Shop Now
-                                </button>
+                                  <Button className="w-full bg-gradient-to-r hover:cursor-pointer from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-1 md:py-2 rounded-md text-xs md:text-sm font-semibold transition-all duration-200 transform group-hover:scale-105">
+                                    Shop Now
+                                  </Button>
+                                </Link>
                               </div>
                             </div>
                           ))}

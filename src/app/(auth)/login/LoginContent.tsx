@@ -39,7 +39,6 @@ export default function LoginContent({
     loginMutation.mutateAsync(values, {
       onSuccess: (res) => {
         setCredentialError(undefined);
-        console.log(res);
         if (res.success) {
           dispatch(
             loginSuccess({ user: res.data.user, token: res.data.token })
@@ -68,7 +67,7 @@ export default function LoginContent({
   return (
     <>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-900">
+        <CardTitle className="text-2xl font-bold text-foreground">
           Login
         </CardTitle>
       </CardHeader>
@@ -155,7 +154,7 @@ export default function LoginContent({
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-gray-500">OR</span>
+            <span className="bg-card px-2">OR</span>
           </div>
         </div>
 

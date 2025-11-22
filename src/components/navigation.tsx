@@ -65,13 +65,18 @@ const gettingStartedLinks = [
   },
 ];
 
-export default function Navigation() {
-  const [isOpen, setIsOpen] = React.useState(false);
+export default function Navigation({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [openCollapsible, setOpenCollapsible] = React.useState<string | null>(
     null
   );
 
-  // hooks 
+  // hooks
   const pathName = usePathname();
 
   const toggleCollapsible = (value: string) => {
@@ -84,12 +89,13 @@ export default function Navigation() {
       <div className="hidden md:flex">
         <NavigationMenu>
           <NavigationMenuList>
-
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="bg-tranparent text-md">
+                Getting started
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                   {gettingStartedLinks.map((link) => (
+                  {gettingStartedLinks.map((link) => (
                     <ListItem
                       key={link.title}
                       href={link.href}
@@ -104,7 +110,9 @@ export default function Navigation() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Pages</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="bg-tranparent text-md">
+                Pages
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {components.map((component) => (
@@ -122,34 +130,40 @@ export default function Navigation() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/" passHref>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  Documentation
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <Link href="/help"  className={cn('h-9 px-4 py-2 text-sm', pathName === '/help'? 'text-red-500 font-semibold': '')}>
+              <Link
+                href="/help"
+                className={cn(
+                  "h-9 px-4 py-2 text-md rounded-md hover:bg-muted",
+                  pathName === "/help" ? "text-red-500 font-semibold" : ""
+                )}
+              >
                 Help
               </Link>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/contact" className={cn('h-9 px-4 py-2 text-sm', pathName === '/contact'? 'text-red-500 font-semibold': '')}>
+              <Link
+                href="/contact"
+                className={cn(
+                  "h-9 px-4 py-2 text-md rounded-md hover:bg-muted",
+                  pathName === "/contact" ? "text-red-500 font-semibold" : ""
+                )}
+              >
                 Contact
               </Link>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/about"  className={cn('h-9 px-4 py-2 text-sm', pathName === '/about'? 'text-red-500 font-semibold': '')}>
+              <Link
+                href="/about"
+                className={cn(
+                  "h-9 px-4 py-2 text-md rounded-md hover:bg-muted",
+                  pathName === "/about" ? "text-red-500 font-semibold" : ""
+                )}
+              >
                 About
               </Link>
             </NavigationMenuItem>
-          
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -157,12 +171,13 @@ export default function Navigation() {
       {/* Mobile Navigation */}
       <div className="md:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
+          {/* <SheetTrigger asChild>
             <Button variant="ghost" size="sm" className=" bg-gray-200 ms-3">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle menu</span>
             </Button>
-          </SheetTrigger>
+          </SheetTrigger> */}
+
           <SheetContent
             side="right"
             className="w-[300px] sm:w-[400px]"
@@ -304,9 +319,11 @@ export default function Navigation() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<typeof Link> & { title: string, pathName: string }
+  React.ComponentPropsWithoutRef<typeof Link> & {
+    title: string;
+    pathName: string;
+  }
 >(({ className, title, children, pathName, ...props }, ref) => {
-
   return (
     <li>
       <Link {...props} className="no-underline">
@@ -314,12 +331,25 @@ const ListItem = React.forwardRef<
           asChild
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className, props.href === pathName ? 'bg-red-100' : ''
+            className,
+            props.href === pathName ? "bg-red-100" : ""
           )}
         >
           <div>
-            <div className={cn("text-sm font-medium leading-none", props.href === pathName ? 'text-red-600' : '')}>{title}</div>
-            <p className={cn("line-clamp-2 text-sm leading-snug text-muted-foreground",  props.href === pathName ? 'text-red-500' : '')}>
+            <div
+              className={cn(
+                "text-sm font-medium leading-none",
+                props.href === pathName ? "text-red-600" : ""
+              )}
+            >
+              {title}
+            </div>
+            <p
+              className={cn(
+                "line-clamp-2 text-sm leading-snug text-muted-foreground",
+                props.href === pathName ? "text-red-500" : ""
+              )}
+            >
               {children}
             </p>
           </div>

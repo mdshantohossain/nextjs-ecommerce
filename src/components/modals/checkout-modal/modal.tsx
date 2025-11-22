@@ -15,20 +15,19 @@ export default function CheckoutAuthModal() {
     setModalWhich("login");
   };
 
-  if (modalWhich === "login") {
-    return (
+  const renderContent =
+    modalWhich === "login" ? (
       <LoginContent
         onPressSignUp={handlePressOnSignUpOrSignIn}
         fromModal={true}
       />
-    );
-  } else if (modalWhich === "register") {
-    return (
+    ) : (
       <RegisterContent
         onPressSignUp={handlePressOnSignUpOrSignIn}
         fromModal={true}
         handleLogin={handleLogin}
       />
     );
-  }
+
+  return renderContent;
 }
