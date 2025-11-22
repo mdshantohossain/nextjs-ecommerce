@@ -346,9 +346,9 @@ export default function ProductDetailPage() {
           <div className="space-y-6 order-2">
             <div>
               <span className="text-xl sm:text-2xl lg:text-3xl font-medium text-balance">
-  {product.name}
-</span>
-             
+                {product.name}
+              </span>
+
               <div className="flex items-center gap-4 mb-4 flex-wrap mt-4">
                 <div className="flex items-center gap-1">
                   <div className="flex">
@@ -433,7 +433,7 @@ export default function ProductDetailPage() {
                               : "border-gray-200 bg-transparent hover:border-gray-400"
                           }`}
                         >
-                         {size}
+                          {size}
                         </button>
                       )
                     )}
@@ -745,56 +745,52 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Fullscreen Modal */}
-        {showFullscreen && (
-              <div className="fixed inset-0 bg-black z-50 flex items-center justify-center p-4">
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <Button
-                    onClick={() => setShowFullscreen(false)}
-                    size="icon"
-                    variant="ghost"
-                    className="absolute top-4 right-4 z-10 bg-white/20 hover:bg-white/30 text-white rounded-full"
+      {showFullscreen && (
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center p-4">
+          <div className="relative w-full h-full flex items-center justify-center">
+            <Button
+              onClick={() => setShowFullscreen(false)}
+              size="icon"
+              variant="ghost"
+              className="absolute top-4 right-4 z-10 bg-white/20 hover:bg-white/30 text-white rounded-full"
+            >
+              <X className="h-6 w-6" />
+            </Button>
+
+            <Image
+              src={currentImage?.image || product.main_image}
+              alt={product.name}
+              fill
+              className="object-contain select-none"
+              style={{ userSelect: "none" }}
+            />
+
+            {allImages.length > 1 && (
+              <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10 flex gap-2 overflow-x-auto max-w-sm">
+                {allImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={`flex-shrink-0 rounded border-2 overflow-hidden transition-colors ${
+                      selectedImageIndex === index
+                        ? "border-white"
+                        : "border-white/50"
+                    }`}
                   >
-                    <X className="h-6 w-6" />
-                  </Button>
-      
-                  <div className="absolute bottom-4 left-4 z-10 bg-black/70 text-white px-4 py-2 rounded-lg text-sm">
-                    Scroll or drag to navigate
-                  </div>
-      
-                  <Image
-                    src={currentImage?.image || product.main_image}
-                    alt={product.name}
-                    fill
-                    className="object-contain select-none"
-                    style={{ userSelect: "none" }}
-                  />
-      
-                  {allImages.length > 1 && (
-                    <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10 flex gap-2 overflow-x-auto max-w-sm">
-                      {allImages.map((img, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setSelectedImageIndex(index)}
-                          className={`flex-shrink-0 rounded border-2 overflow-hidden transition-colors ${
-                            selectedImageIndex === index
-                              ? "border-white"
-                              : "border-white/50"
-                          }`}
-                        >
-                          <Image
-                            src={img.image || "/placeholder.svg"}
-                            alt={`Thumbnail ${index + 1}`}
-                            width={48}
-                            height={48}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                    <Image
+                      src={img.image || "/placeholder.svg"}
+                      alt={`Thumbnail ${index + 1}`}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
               </div>
             )}
+          </div>
+        </div>
+      )}
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] px-4">

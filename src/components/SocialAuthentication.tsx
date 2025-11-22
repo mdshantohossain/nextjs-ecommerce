@@ -12,6 +12,7 @@ import { FACEBOOK_CLIENT_ID } from "@/config/api";
 import { useSocialLoginMutation } from "@/hooks/api/socialLogin";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from "react-facebook-login";
 
 export default function SocialAuthentication() {
   const dispatch = useDispatch();
@@ -40,9 +41,12 @@ export default function SocialAuthentication() {
   });
 
   // Facebook login handler
-  const handleFacebookResponse = async (response: any) => {
+  const handleFacebookResponse = async ( userInfo: ReactFacebookLoginInfo | ReactFacebookFailureResponse
+): Promise<void> => {
+  if("accessToken" in userInfo) {
+    const accessToken = userInfo.accessToken;
     socialLoginMutation.mutate(
-      { provider: "facebook", token: response.accessToken },
+      { provider: "facebook", token: accessToken },
       {
         onSuccess: (res) => {
           if (res.success) {
@@ -57,7 +61,11 @@ export default function SocialAuthentication() {
         onError: (err) => console.error("Facebook login failed:", err),
       }
     );
-  };
+  } else {
+
+  }
+
+}
 
   return (
     <div className="grid grid-cols-2 gap-3">

@@ -65,8 +65,13 @@ const gettingStartedLinks = [
   },
 ];
 
-export default function Navigation() {
-  const [isOpen, setIsOpen] = React.useState(false);
+export default function Navigation({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [openCollapsible, setOpenCollapsible] = React.useState<string | null>(
     null
   );
@@ -166,12 +171,13 @@ export default function Navigation() {
       {/* Mobile Navigation */}
       <div className="md:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
+          {/* <SheetTrigger asChild>
             <Button variant="ghost" size="sm" className=" bg-gray-200 ms-3">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle menu</span>
             </Button>
-          </SheetTrigger>
+          </SheetTrigger> */}
+
           <SheetContent
             side="right"
             className="w-[300px] sm:w-[400px]"

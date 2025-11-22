@@ -38,8 +38,6 @@ export function CategoryDropdown() {
   const router = useRouter();
   const { isSubCategoryActive, isCategoryActive } = useCurrentUrl();
 
-
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
@@ -87,7 +85,6 @@ export function CategoryDropdown() {
   return (
     <div className="relative">
       {/* ---------- DESKTOP DROPDOWN ---------- */}
-
       <div ref={desktopDropdownRef} className="hidden md:flex">
         <div
           onClick={() => setIsDesktopOpen(!isDesktopOpen)}
@@ -112,7 +109,7 @@ export function CategoryDropdown() {
             style={{ minHeight: "auto" }}
           >
             {/* Categories List - CHANGE: Responsive height and width */}
-            <div className="w-full md:w-72 border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto max-h-72 md:max-h-96 ">
+            <div className="w-full md:w-72 border-b md:border-b-0 md:border-r border-gray-200 overflow-y-auto max-h-72 md:max-h-96">
               {categories?.map((category) => (
                 <Link
                   href={`/products?category=${category.slug}`}
@@ -255,9 +252,11 @@ export function CategoryDropdown() {
                                 <span className="text-base md:text-lg font-bold text-red-600">
                                   ${categoryProduct.selling_price.toFixed(0)}
                                 </span>
-                                <span className="text-xs md:text-sm text-gray-400 line-through">
-                                  ${categoryProduct.regular_price.toFixed(0)}
-                                </span>
+                                {categoryProduct.regular_price && (
+                                  <span className="text-xs md:text-sm text-gray-400 line-through">
+                                    ${categoryProduct.regular_price.toFixed(0)}
+                                  </span>
+                                )}
                               </div>
 
                               {/* CTA Button */}
@@ -318,7 +317,11 @@ export function CategoryDropdown() {
                   <CollapsibleTrigger asChild>
                     <button
                       type="button"
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-md  transition-colors ${isCategoryActive(category.slug) ? "bg-red-500": "bg-card"}`}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-md  transition-colors ${
+                        isCategoryActive(category.slug)
+                          ? "bg-red-500"
+                          : "bg-card"
+                      }`}
                     >
                       <Link href={`/products?category=${category.slug}`}>
                         <div
@@ -354,7 +357,13 @@ export function CategoryDropdown() {
                         key={sub.id}
                         onClick={() => setIsMobileOpen(false)}
                       >
-                        <div className={`px-2 py-2 text-sm text-foreground hover:text-red-600 cursor-pointer flex justify-between items-center ${isSubCategoryActive(sub.slug) ? "bg-red-400": "bg-background/50"} my-1 rounded-md`}>
+                        <div
+                          className={`px-2 py-2 text-sm text-foreground hover:text-red-600 cursor-pointer flex justify-between items-center ${
+                            isSubCategoryActive(sub.slug)
+                              ? "bg-red-400"
+                              : "bg-background/50"
+                          } my-1 rounded-md`}
+                        >
                           {sub.name} <ArrowRight size={14} />
                         </div>
                       </Link>
