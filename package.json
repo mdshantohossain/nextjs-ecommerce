@@ -39,7 +39,6 @@
     "mime-types": "^3.0.1",
     "nanoid": "^5.1.5",
     "next": "^15.5.3",
-    "node": "^24.8.0",
     "react": "^19.1.1",
     "react-country-region-selector": "^4.0.5",
     "react-dom": "^19.0.0",

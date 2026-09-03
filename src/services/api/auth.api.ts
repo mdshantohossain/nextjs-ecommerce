@@ -32,6 +32,7 @@ export const logoutMutation = () => {
       const response = await api.post(`${API_URL}/auth/logout`, null, {
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
       });
       return response.data;

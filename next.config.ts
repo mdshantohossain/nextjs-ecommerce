@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 const { resolve } = require('path');
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
      remotePatterns: [
       {

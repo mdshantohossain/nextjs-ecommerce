@@ -22,7 +22,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export const generateMetadata = async () => {
+export const generateMetadata = async (): Promise<{title: string; description: string}> => {
   const res = await fetch(`${API_URL}/app-info`);
   const {data: app} = await res.json();
 
