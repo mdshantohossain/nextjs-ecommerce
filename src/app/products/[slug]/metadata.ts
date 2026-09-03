@@ -8,7 +8,7 @@ export async function generateMetadata({
   params: Promise<{
     slug: string;
   }>;
-}): Promise<Metadata | undefined> {
+  }): Promise<Metadata | undefined> {
   const { slug } = await params;
 
   const product = await getProductDetail(slug);
@@ -16,7 +16,7 @@ export async function generateMetadata({
   if (!product) return;
 
   return {
-    title: product.meta_title || product.name + `| Buy Online`,
+    title: product.meta_title || product.name + ` | Buy Online`,
     description:
       product.meta_description ||
       product.short_description ||
@@ -26,7 +26,7 @@ export async function generateMetadata({
       canonical: `${APP_URL}/products/${product.slug}`,
     },
     openGraph: {
-      title: product.meta_title || product.nam + `| Buy Online`,
+      title: product.meta_title || product.nam + ` | Buy Online`,
       description: product.short_description,
       images: product.image_thumbnail ? [product.image_thumbnail] : [],
       url: `${APP_URL}/${product.slug}`,

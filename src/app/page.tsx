@@ -12,25 +12,6 @@ import { fetchAppInfo } from "@/features/appSlice";
 import AddSection from "@/components/page/home/AddSection";
 import Loading from "./loading";
 
-const images = [
-  {
-    src: "https://fastly.picsum.photos/id/20/3670/2462.jpg?hmac=CmQ0ln-k5ZqkdtLvVO23LjVAEabZQx2wOaT4pyeG10I",
-    alt: "Slide 1",
-  },
-  {
-    src: "https://fastly.picsum.photos/id/11/2500/1667.jpg?hmac=xxjFJtAPgshYkysU_aqx2sZir-kIOjNR9vx0te7GycQ",
-    alt: "Slide 2",
-  },
-  {
-    src: "https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s",
-    alt: "Slide 3",
-  },
-  {
-    src: "https://fastly.picsum.photos/id/29/4000/2670.jpg?hmac=rCbRAl24FzrSzwlR5tL-Aqzyu5tX_PA95VJtnUXegGU",
-    alt: "Slide 4",
-  },
-];
-
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
@@ -47,10 +28,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="w-full">
-        <Slider
-          images={images}
-          className="aspect-[21/9] md:aspect-[21/7] max-h-[600px]"
-        />
+        <Slider />
       </div>
 
       <div className="mx-auto px-4 md:px-8 py-8">

@@ -6,24 +6,32 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-interface ImageSliderProps {
-  images: {
-    src: string;
-    alt: string;
-  }[];
-  autoPlayInterval?: number;
-  className?: string;
-}
+const images = [
+  {
+    src: "https://fastly.picsum.photos/id/20/3670/2462.jpg?hmac=CmQ0ln-k5ZqkdtLvVO23LjVAEabZQx2wOaT4pyeG10I",
+    alt: "Slide 1",
+  },
+  {
+    src: "https://fastly.picsum.photos/id/11/2500/1667.jpg?hmac=xxjFJtAPgshYkysU_aqx2sZir-kIOjNR9vx0te7GycQ",
+    alt: "Slide 2",
+  },
+  {
+    src: "https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s",
+    alt: "Slide 3",
+  },
+  {
+    src: "https://fastly.picsum.photos/id/29/4000/2670.jpg?hmac=rCbRAl24FzrSzwlR5tL-Aqzyu5tX_PA95VJtnUXegGU",
+    alt: "Slide 4",
+  },
+];
 
-export default function Slider({
-  images,
-  autoPlayInterval = 3000,
-  className,
-}: ImageSliderProps) {
+export default function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  const AutoPlayInterval = 3000;
 
   // Handle next slide
   const nextSlide = useCallback(() => {
@@ -47,7 +55,7 @@ export default function Slider({
     if (isPlaying) {
       timerRef.current = setInterval(() => {
         nextSlide();
-      }, autoPlayInterval);
+      }, AutoPlayInterval);
     }
 
     return () => {
@@ -55,7 +63,7 @@ export default function Slider({
         clearInterval(timerRef.current);
       }
     };
-  }, [isPlaying, nextSlide, autoPlayInterval]);
+  }, [isPlaying, nextSlide, AutoPlayInterval]);
 
   // Pause on hover
   const handleMouseEnter = () => {
@@ -116,7 +124,7 @@ export default function Slider({
 
   return (
     <div
-      className={cn("relative w-full overflow-hidden", className)}
+      className="relative w-full overflow-hidden aspect-[21/9] md:aspect-[21/7] max-h-[600px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}

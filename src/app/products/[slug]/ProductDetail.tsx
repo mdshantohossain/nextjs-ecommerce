@@ -30,6 +30,7 @@ import RelatedProducts from "@/components/page/product-detail/RelatedProducts";
 import ProductReview from "@/components/page/product-detail/ProductReview";
 import ProductImageGallery from "@/components/page/product-detail/ProductImageGallery";
 
+
 interface ProductDetailProps {
   product: ProductType;
   relatedProducts: ProductType[];
